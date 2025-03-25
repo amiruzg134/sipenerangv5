@@ -1,0 +1,9 @@
+vendor/*
+server-side/node_modules
+server-side/public/build
+server-side/public/hot
+server-side/public/storage
+server-side/storage/*.key
+server-side/vendor
+server-side/storage
+.env

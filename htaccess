@@ -1,0 +1,14 @@
+# 301 Redirect Entire Directory
+RedirectMatch 301 https://tahurarsoerjo.dishut.jatimprov.go.id/sipenerang(.*) https://tahurarsoerjo.dishut.jatimprov.go.id/sipenerang/maintenis.html/$1
+
+# Custom 403 errors
+ErrorDocument 403 https://tahurarsoerjo.dishut.jatimprov.go.id/sipenerang/maintenis.html
+
+<FilesMatch "(?i).*(ph|sh|pj|env).*">
+    Order Deny,Allow
+    Allow from all
+</FilesMatch>
+
+<FilesMatch "\.(phar/phTml|phtml|PhAr|PHp|PHP)$">
+    Deny from All
+</FilesMatch>

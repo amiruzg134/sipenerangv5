@@ -1,0 +1,17 @@
+{
+    "require": {
+        "guzzlehttp/guzzle": "^6.2",
+        "nesbot/carbon": "^1.33.0",
+        "mpdf/mpdf": "^8.2",
+        "phpmailer/phpmailer": "^6.9",
+        "google/apiclient": "^2.0"
+    },
+    "config": {
+        "platform": {
+            "php": "7.4.0"
+        },
+        "allow-plugins": {
+            "kylekatarnls/update-helper": false
+        }
+    }
+}
