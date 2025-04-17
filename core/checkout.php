@@ -262,22 +262,39 @@ try{
         $sql_BASE_URL_VA = mysqli_fetch_array(mysqli_query($conn, "SELECT * FROM tb_config WHERE name='BASE_URL_VA'"));
         $BASE_URL_VA = $sql_BASE_URL_VA['value'] != null ? $sql_BASE_URL_VA['value'] : getenv('BASE_URL_VA');
 
+        $send_va = [
+            "VirtualAccount"        => '1518610109'.$kode_registrasi,
+            "Nama"                  => $fullname,
+            "TotalTagihan"          => $total_bayar,
+            "TanggalExp"            => $expired_at->format('Ymd'),
+            "Berita1"               => "Retribusi Pendakian ".$pd_nomor,
+            "Berita2"               => "UPT Tahura Raden Soerjo",
+            "Berita3"               => "",
+            "Berita4"               => "",
+            "Berita5"               => "",
+            "FlagProses"            => "1"
+        ];
+
+        $dataLog = [
+            "code"              => $pd_nomor,
+            "payment_category"  => "VA",
+            "log"               => $send_va,
+        ];
+        logPayment('PAYLOAD', $dataLog);
         $register_va = $client->post($BASE_URL_VA.'RegPen', [
-                'form_params' => [
-                    "VirtualAccount"        => '15186101'.$kode_registrasi,
-                    "Nama"                  => $fullname,
-                    "TotalTagihan"          => $total_bayar,
-                    "TanggalExp"            => $expired_at->format('Ymd'),
-                    "Berita1"               => "Retribusi Pendakian ".$pd_nomor,
-                    "Berita2"               => "UPT Tahura Raden Soerjo",
-                    "Berita3"               => "",
-                    "Berita4"               => "",
-                    "Berita5"               => "",
-                    "FlagProses"            => "1"
-                ]
+                'headers' => [
+                    'Accept' => 'application/json'
+                ],
+                'json' => $send_va
             ]
         );
         $res_data = json_decode($register_va->getBody(), true);
+        $responseData = [
+            "code"              => $pd_nomor,
+            "payment_category"  => "VA",
+            "log"               => $res_data,
+        ];
+        logPayment('RESPONSE', $responseData);
         $payment_number = $res_data['VirtualAccount'];
     }else if($kategori_pembayaran == "QRIS"){
 
@@ -293,32 +310,47 @@ try{
         $sql_MERCHANTHASHKEY= mysqli_fetch_array(mysqli_query($conn, "SELECT * FROM tb_config WHERE name='MERCHANTHASHKEY'"));
         $MERCHANTHASHKEY = $sql_MERCHANTHASHKEY['value'] != null ? $sql_MERCHANTHASHKEY['value'] : getenv('MERCHANTHASHKEY');
 
+        $data_qris = [
+            "merchantPan"   => $MERCHANTPAN,
+            "hashcodeKey"   => hash('sha256', $MERCHANTPAN.$pd_nomor.$TERMINALUSER.$MERCHANTHASHKEY),
+            "billNumber"    => $pd_nomor,
+            "purposetrx"    => "PENGUJIAN",
+            "storelabel"    => "DISHUB KEPANJEN",
+            "customerlabel" => "PUBLIC",
+            "terminalUser"  => $TERMINALUSER,
+            "expiredDate"   => $expired_at->format('Y-m-d H:i:s'),
+            "amount"        => $total_bayar
+        ];
+
+        $dataLog = [
+            "code"              => $pd_nomor,
+            "payment_category"  => "QRIS",
+            "log"               => $data_qris,
+        ];
+        logPayment('PAYLOAD', $dataLog);
         $register_va = $client->post($BASE_URL_QRIS.'Dynamic', [
-            'form_params' => [
-                "merchantPan"   => $MERCHANTPAN,
-                "hashcodeKey"   => hash('sha256', $MERCHANTPAN.$pd_nomor.$TERMINALUSER.$MERCHANTHASHKEY),
-                "billNumber"    => $pd_nomor,
-                "purposetrx"    => "PENGUJIAN",
-                "storelabel"    => "DISHUB KEPANJEN",
-                "customerlabel" => "PUBLIC",
-                "terminalUser"  => $TERMINALUSER,
-                "expiredDate"   => $expired_at,
-                "amount"        => $total_bayar
-                ],
-            ]
-        );
+            'headers' => [
+                'Accept' => 'application/json'
+            ],
+            'json' => $data_qris
+        ]);
         $res_data = json_decode($register_va->getBody(), true);
+        $responseData = [
+            "code"              => $pd_nomor,
+            "payment_category"  => "QRIS",
+            "log"               => $res_data,
+        ];
+        logPayment('RESPONSE', $responseData);
         $payment_number = $res_data['qrValue'];
     }else{
         $respon = [
             "error" => true,
-            "message" => "Bembayaran selain VA & QRIS belum tersedia",
+            "message" => "Pembayaran selain VA & QRIS belum tersedia",
             "data" => null
         ];
         echo json_encode($respon);
         exit();
     }
-
 
     $sql_BASE_URL = mysqli_fetch_array(mysqli_query($conn, "SELECT * FROM tb_config WHERE name='BASE_URL'"));
     $BASE_URL = $sql_BASE_URL['value'] != null ? $sql_BASE_URL['value'] : getenv('BASE_URL');

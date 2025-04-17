@@ -109,7 +109,7 @@ if (empty($tiket_kuota)){
     exit();
 }
 
-$total_trx 	 = mysqli_fetch_array(mysqli_query($conn, "SELECT COUNT(*) AS jml FROM tb_pendakian 
+$total_trx   = mysqli_fetch_array(mysqli_query($conn, "SELECT COUNT(*) AS jml FROM tb_pendakian 
                 WHERE is_region_new=1 AND tb_gunung_id='$gunung_id' AND pd_pos_pendakian='$pos_id'
                 AND sts_bayar='paid' AND DATE(tgl_naik) = '$start_date'"));
 

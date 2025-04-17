@@ -4,6 +4,15 @@ function rupiah($nominal)
     return number_format($nominal, 0, ",", ".");
 }
 
+function logPayment($type, $data) {
+    $logFile = __DIR__ . '/payment_gateway.log';
+    $logEntry = [
+        'insert_time' => date('Y-m-d H:i:s'),
+        'type' => $type,
+        'data' => $data
+    ];
+    file_put_contents($logFile, json_encode($logEntry, JSON_UNESCAPED_UNICODE) . PHP_EOL, FILE_APPEND);
+}
 
 function encrypt_openssl($plaintext, $key)
 {

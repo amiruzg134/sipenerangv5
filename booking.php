@@ -614,10 +614,7 @@
           <div class="container-fluid">
             <div class="row align-items-center">
               <div class="col-md-12 mb-lg-0 mb-4">
-                <div class="copyright text-center text-sm text-muted text-center"> All rights reserved. Copyright ©
-                  <script>
-                    document.write(new Date().getFullYear())
-                  </script>
+                <div class="copyright text-center text-sm text-muted text-center"> All rights reserved. © 2019
                   <a href="https://tahurarsoerjo.dishut.jatimprov.go.id" target="_blank">UPT Tahura Raden Soerjo.</a>
                 </div>
               </div>

@@ -19,65 +19,101 @@ try{
     $fullname           = $entityBody->fullname;
     $expired_at         = $entityBody->expired_at;
 
+
     $trx_pendaki =  mysqli_fetch_array(mysqli_query($conn, "SELECT * FROM tb_pendakian WHERE trx_pendakian_id='$trx_id'"));
     $metodePembayaran = mysqli_fetch_array(mysqli_query($conn, "SELECT * FROM metode_pembayaran WHERE metode_pembayaran_tiket_pendakian_id='$payment_method_id'"));
     $kategori_pembayaran = $metodePembayaran['kategori'];
     $metode_pembayaran_id = $metodePembayaran['id'];
     $set_expired_at = Carbon::parse($expired_at)->format("y-m-d H:i:s");
 
-    $datatest = [
-        "VirtualAccount"        => '15186101'.Carbon::now()->timestamp,
-        "Nama"                  => $fullname,
-        "TotalTagihan"          => $total_tagihan,
-        "TanggalExp"            => Carbon::parse($set_expired_at)->format("Ymd"),
-        "Berita1"               => "Retribusi Pendakian ".$trx_pendaki['pd_nomor'],
-        "Berita2"               => "UPT Tahura Raden Soerjo",
-        "Berita3"               => "",
-        "Berita4"               => "",
-        "Berita5"               => "",
-        "FlagProses"            => "1"
-    ];
+    $kode_registrasi    = Carbon::now()->timestamp;
+    $pd_nomor           = 'PD-'.$kode_registrasi;
+
 
     if($kategori_pembayaran == "VA"){
-        $sql_env_url_va = mysqli_fetch_array(mysqli_query($conn, "SELECT * FROM tb_config WHERE name='BASE_URL_VA'"));
-        $env_url_va = $sql_env_url_va['value'] != null ? $sql_env_url_va['value'] : getenv('BASE_URL_VA');
+        $sql_BASE_URL_VA = mysqli_fetch_array(mysqli_query($conn, "SELECT * FROM tb_config WHERE name='BASE_URL_VA'"));
+        $BASE_URL_VA = $sql_BASE_URL_VA['value'] != null ? $sql_BASE_URL_VA['value'] : getenv('BASE_URL_VA');
 
-        $register_va = $client->post($env_url_va.'RegPen', [
-                'form_params' => [
-                    "VirtualAccount"        => '15186101'.Carbon::now()->timestamp,
-                    "Nama"                  => $fullname,
-                    "TotalTagihan"          => $total_tagihan,
-                    "TanggalExp"            => Carbon::parse($set_expired_at)->format("Ymd"),
-                    "Berita1"               => "Retribusi Pendakian ".$trx_pendaki['pd_nomor'],
-                    "Berita2"               => "UPT Tahura Raden Soerjo",
-                    "Berita3"               => "",
-                    "Berita4"               => "",
-                    "Berita5"               => "",
-                    "FlagProses"            => "1"
-                ]
+        $send_va = [
+            "VirtualAccount"        => '1518610109'.$kode_registrasi,
+            "Nama"                  => $fullname,
+            "TotalTagihan"          => $total_tagihan,
+            "TanggalExp"            => Carbon::parse($expired_at)->format('Ymd'),
+            "Berita1"               => "Retribusi Pendakian ".$pd_nomor,
+            "Berita2"               => "UPT Tahura Raden Soerjo",
+            "Berita3"               => "",
+            "Berita4"               => "",
+            "Berita5"               => "",
+            "FlagProses"            => "1"
+        ];
+
+        $dataLog = [
+            "code"              => $pd_nomor,
+            "payment_category"  => "VA",
+            "log"               => $send_va,
+        ];
+
+        logPayment('PAYLOAD', $dataLog);
+        $register_va = $client->post($BASE_URL_VA.'RegPen', [
+                'headers' => [
+                    'Accept' => 'application/json'
+                ],
+                'json' => $send_va
             ]
         );
         $res_data = json_decode($register_va->getBody(), true);
+        $responseData = [
+            "code"              => $pd_nomor,
+            "payment_category"  => "VA",
+            "log"               => $res_data,
+        ];
 
+        logPayment('RESPONSE', $responseData);
         $payment_number = $res_data['VirtualAccount'];
     }else if($kategori_pembayaran == "QRIS"){
-        $sql_env_url_qris = mysqli_fetch_array(mysqli_query($conn, "SELECT * FROM tb_config WHERE name='BASE_URL_QRIS'"));
-        $env_url_qris = $sql_env_url_qris['value'] != null ? $sql_env_url_qris['value'] : getenv('BASE_URL_QRIS');
-        $register_va = $client->post($env_url_qris.'Dynamic', [
-                'form_params' => [
-                    "merchantPan"   => getenv('MERCHANTPAN'),
-                    "hashcodeKey"   => hash('sha256', getenv('MERCHANTPAN').$trx_pendaki['pd_id'].getenv('TERMINALUSER').getenv('MERCHANTHASHKEY')),
-                    "billNumber"    => $trx_pendaki['pd_nomor'],
-                    "purposetrx"    => "PENGUJIAN",
-                    "storelabel"    => "DISHUB KEPANJEN",
-                    "customerlabel" => "PUBLIC",
-                    "terminalUser"  => getenv('TERMINALUSER'),
-                    "expiredDate"   => $expired_at,
-                    "amount"        => $total_tagihan
-                ],
-            ]
-        );
+
+        $sql_BASE_URL_QRIS = mysqli_fetch_array(mysqli_query($conn, "SELECT * FROM tb_config WHERE name='BASE_URL_QRIS'"));
+        $BASE_URL_QRIS = $sql_BASE_URL_QRIS['value'] != null ? $sql_BASE_URL_QRIS['value'] : getenv('BASE_URL_QRIS');
+
+        $sql_MERCHANTPAN= mysqli_fetch_array(mysqli_query($conn, "SELECT * FROM tb_config WHERE name='MERCHANTPAN'"));
+        $MERCHANTPAN = $sql_MERCHANTPAN['value'] != null ? $sql_MERCHANTPAN['value'] : getenv('MERCHANTPAN');
+
+        $sql_TERMINALUSER= mysqli_fetch_array(mysqli_query($conn, "SELECT * FROM tb_config WHERE name='TERMINALUSER'"));
+        $TERMINALUSER = $sql_TERMINALUSER['value'] != null ? $sql_TERMINALUSER['value'] : getenv('TERMINALUSER');
+
+        $sql_MERCHANTHASHKEY= mysqli_fetch_array(mysqli_query($conn, "SELECT * FROM tb_config WHERE name='MERCHANTHASHKEY'"));
+        $MERCHANTHASHKEY = $sql_MERCHANTHASHKEY['value'] != null ? $sql_MERCHANTHASHKEY['value'] : getenv('MERCHANTHASHKEY');
+
+        $data_qris = [
+            "merchantPan"   => $MERCHANTPAN,
+            "hashcodeKey"   => hash('sha256', $MERCHANTPAN.$pd_nomor.$TERMINALUSER.$MERCHANTHASHKEY),
+            "billNumber"    => $pd_nomor,
+            "purposetrx"    => "PENGUJIAN",
+            "storelabel"    => "DISHUB KEPANJEN",
+            "customerlabel" => "PUBLIC",
+            "terminalUser"  => $TERMINALUSER,
+            "expiredDate"   => Carbon::parse($expired_at)->format('Y-m-d H:i:s'),
+            "amount"        => $total_tagihan
+        ];
+        $dataLog = [
+            "code"              => $pd_nomor,
+            "payment_category"  => "QRIS",
+            "log"               => $data_qris,
+        ];
+        logPayment('PAYLOAD', $dataLog);
+        $register_va = $client->post($BASE_URL_QRIS.'Dynamic', [
+            'headers' => [
+                'Accept' => 'application/json'
+            ],
+            'json' => $data_qris
+        ]);
         $res_data = json_decode($register_va->getBody(), true);
+        $responseData = [
+            "code"              => $pd_nomor,
+            "payment_category"  => "QRIS",
+            "log"               => $res_data,
+        ];
+        logPayment('RESPONSE', $responseData);
         $payment_number = $res_data['qrValue'];
     }else{
         $respon = [
@@ -111,5 +147,3 @@ try{
     echo json_encode($respon);
     exit();
 }
-
-
