@@ -345,7 +345,7 @@ try{
     }else{
         $respon = [
             "error" => true,
-            "message" => "Pembayaran selain VA & QRIS belum tersedia",
+            "message" => "Bembayaran selain VA & QRIS belum tersedia",
             "data" => null
         ];
         echo json_encode($respon);
@@ -384,6 +384,23 @@ try{
     );
     $res = json_decode($response->getBody(), true);
 
+    $responseDataTiketPendakian = [
+        "code"              => $pd_nomor,
+        "log"               => $res,
+    ];
+    logPayment('RESPONSE_TIKET_PENDAKIAN', $responseDataTiketPendakian);
+
+    if($res['error']){
+        mysqli_rollback($conn);
+        $respon = [
+            "error" => true,
+            "message" => $res['message'],
+            "data" => null
+        ];
+        echo json_encode($respon);
+        exit();
+    }
+
     if(isset($res['data']['data_user'])){
         $set_ap_nomor = 1;
         foreach ($res['data']['data_user'] as $datum) {
@@ -418,12 +435,8 @@ try{
         }
     }
 
-    $sql_KEYENCRIPT = mysqli_fetch_array(mysqli_query($conn, "SELECT * FROM tb_config WHERE name='KEYENCRIPT'"));
-    $KEYENCRIPT = $sql_KEYENCRIPT['value'] != null ? $sql_KEYENCRIPT['value'] : getenv('KEYENCRIPT');
-
     if(isset($res['data']['trx_id'])){
-        $code = encrypt_openssl($res['data']['code'], $KEYENCRIPT);
-
+        $code = base64_encode($res['data']['code']);
         $trx_pendakian_id = $res['data']['trx_id'];
         $sqlUpdate  = "UPDATE tb_pendakian SET trx_pendakian_id='$trx_pendakian_id', 
                         payment_number='$payment_number', 

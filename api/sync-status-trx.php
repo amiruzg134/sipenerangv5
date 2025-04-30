@@ -9,7 +9,7 @@ use Carbon\Carbon;
 
 try{
     $code = $_GET['code'];
-    mysqli_query($conn, "UPDATE tb_pendakian SET sts_bayar='cancel', pd_status='cancel' WHERE pd_nomor='$code'");
+    mysqli_query($conn, "UPDATE tb_pendakian SET sts_bayar='cancel' WHERE pd_nomor='$code'");
     $respon = [
         "error"     => false,
         "message"   => "sync status trx success",
@@ -28,5 +28,4 @@ try{
     echo json_encode($respon);
     exit();
 }
-
 

@@ -142,8 +142,7 @@
 	              <li>Pendaki mancanegara wajib menggunakan jasa Guide sebagai penanggung jawab ketua rombongan;</li>
 	              <li>Pendaftaran <b class="text-primary">secara online</b> melalui website resmi Tahura Raden Soerjo;</li>
 	              <li>Konfirmasi pendaftaran akan diterima ketua rombongan melalui email atau whatsapp. Pastikan alamat email dan nomor telepon benar dan sesuai. Apabila tidak ada pesan pemberitahuan pada kotak masuk email, harap periksa pada kotak SPAM.</li>
-	              <li>Calon pendaki diizinkan melakukan pergantian anggota maksimal 1 (satu) kali, dengan batasan waktu 2 (dua) hari (H-2) sebelum keberangkatan. Ketua rombongan tidak dapat digantikan. Anggota kelompok yang dapat diganti maksimal 50% dari jumlah anggota.</li>
-	              <li>Penambahan anggota hanya bisa dilakukan sebelum pendaki melakukan pembayaran.</li>
+	              <li>Pendaki tidak dapat mengubah atau menambah anggota. Pastikan data anggota yang dimasukkan sudah benar sebelum melakukan melakukan booking.</li>
 	              <li>Pendaki harus melaksanakan pendakian sesuai dengan tanggal naik dan turun sesuai pada SIMAKSI. Petugas berhak menangguhkan jika pendaki naik tidak sesuai dengan tanggal pada SIMAKSI.</li>
 	              <li>Petugas pos perizinan berhak menolak pendaki yang terdaftar dalam <i>blacklist</i> dan pendaki yang tidak memenuhi persyaratan pendakian. </li>
 	              <li><b class="text-dark">BAGI YANG TERBUKTI MELAKUKAN MANIPULASI DAN/ATAU PEMALSUAN DATA, MAKA BOOKING AKAN DIBATALKAN DAN DIMASUKKAN DALAM <i>BLACKLIST.</i></b></li>

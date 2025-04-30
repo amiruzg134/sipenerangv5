@@ -63,6 +63,11 @@
             </button>
             <div class="collapse navbar-collapse w-100 pt-3 pb-2 py-lg-0" id="navigation">
               <ul class="navbar-nav navbar-nav-hover ms-auto">
+                  <li class="nav-item dropdown dropdown-hover mx-2">
+                      <a class="nav-link ps-2 d-flex cursor-pointer align-items-center" href="sop.php">
+                          SOP Pendaki
+                      </a>
+                  </li>
                 <li class="nav-item dropdown dropdown-hover mx-2">
                   <a class="nav-link ps-2 d-flex cursor-pointer align-items-center" href="tutorbooking.php">
                     Panduan Booking
@@ -73,6 +78,11 @@
                     Panduan  Pembayaran
                   </a>
                 </li>
+                  <li class="nav-item dropdown dropdown-hover mx-2">
+                      <a class="nav-link ps-2 d-flex cursor-pointer align-items-center" aria-expanded="false" data-bs-toggle="modal" data-bs-target="#exampleModalSignup">
+                          Status Booking
+                      </a>
+                  </li>
                   <?php
                   if (isset($_SESSION['uuid'])) { ?>
                       <li class="nav-item dropdown dropdown-hover mx-2">
@@ -109,7 +119,7 @@
             <p class="lead pe-md-5 me-md-5 text-white opacity-8">Puncak Arjuno dikenal dengan nama puncak Ogal Agil yang berada di ketinggian 3.399 mdpl.</p>
             <div class="buttons">
               <a type="button" class="btn btn-rounded bg-gradient-primary mt-4 me-2 btn-lg" href="sop.php">Booking</a>
-              <!--              <a type="button" class="btn btn-rounded btn-light shadow-none mt-4 btn-lg" aria-expanded="false" data-bs-toggle="modal" data-bs-target="#exampleModalSignup">Status Booking</a>-->
+              <a type="button" class="btn btn-rounded btn-light shadow-none mt-4 btn-lg" aria-expanded="false" data-bs-toggle="modal" data-bs-target="#exampleModalSignup">Status Booking</a>
             </div>
           </div>
         </div>
@@ -688,7 +698,10 @@
         <div class="col-12">
           <div class="text-center">
             <p class="text-dark my-4 text-sm font-weight-normal">
-              All rights reserved. © 2019
+              All rights reserved. Copyright ©
+              <script>
+                document.write(new Date().getFullYear())
+              </script>
               <a href="https://tahurarsoerjo.dishut.jatimprov.go.id" target="_blank">UPT Tahura Raden Soerjo.</a>
             </p>
           </div>
@@ -754,6 +767,35 @@
     </script>
   </body>
 
+<!-- Modal -->
+<div class="modal fade" id="exampleModalSignup" tabindex="-1" aria-labelledby="exampleModalSignup" aria-hidden="true">
+    <div class="modal-dialog modal-danger modal-dialog-centered modal-" role="document">
+        <div class="modal-content">
+            <div class="modal-body p-0">
+                <div class="card card-plain">
+                    <div class="card-body pb-3 mt-3">
+                        <form role="form text-start" method="post" action="cek_kobok.php" autocomplete="off">
+                            <div class="input-group input-group-outline mb-3">
+                                <label class="form-label">Kode Booking</label>
+                                <input type="text" class="form-control" name="kode" required>
+                                <?php
+                                    $status_login = false;
+                                    if (isset($_SESSION['uuid'])) {
+                                        $status_login = true;
+                                    }
+                                ?>
+                                <input type="hidden" class="form-control" name="status_login" value="<?php echo $status_login; ?>">
+                            </div>
+                            <div class="text-center">
+                                <button class="btn bg-gradient-info w-100 mt-3 mb-0">cek status</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
   <!-- Modal -->
 <!--   <div class="modal fade" id="exampleModalNotification" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">

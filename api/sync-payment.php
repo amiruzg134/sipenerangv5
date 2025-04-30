@@ -15,6 +15,7 @@ try{
 
     $payment_method_id  = $entityBody->payment_method_id;
     $trx_id             = $entityBody->trx_id;
+    $pin                = $entityBody->pin;
     $total_tagihan      = $entityBody->total_tagihan;
     $fullname           = $entityBody->fullname;
     $expired_at         = $entityBody->expired_at;
@@ -27,10 +28,10 @@ try{
     $set_expired_at = Carbon::parse($expired_at)->format("y-m-d H:i:s");
 
     $kode_registrasi    = Carbon::now()->timestamp;
-    $pd_nomor           = 'PD-'.$kode_registrasi;
-
+    $pd_nomor           = $trx_pendaki['pd_nomor'];
 
     if($kategori_pembayaran == "VA"){
+
         $sql_BASE_URL_VA = mysqli_fetch_array(mysqli_query($conn, "SELECT * FROM tb_config WHERE name='BASE_URL_VA'"));
         $BASE_URL_VA = $sql_BASE_URL_VA['value'] != null ? $sql_BASE_URL_VA['value'] : getenv('BASE_URL_VA');
 
@@ -46,13 +47,11 @@ try{
             "Berita5"               => "",
             "FlagProses"            => "1"
         ];
-
         $dataLog = [
             "code"              => $pd_nomor,
             "payment_category"  => "VA",
             "log"               => $send_va,
         ];
-
         logPayment('PAYLOAD', $dataLog);
         $register_va = $client->post($BASE_URL_VA.'RegPen', [
                 'headers' => [
@@ -67,7 +66,6 @@ try{
             "payment_category"  => "VA",
             "log"               => $res_data,
         ];
-
         logPayment('RESPONSE', $responseData);
         $payment_number = $res_data['VirtualAccount'];
     }else if($kategori_pembayaran == "QRIS"){
@@ -92,9 +90,10 @@ try{
             "storelabel"    => "DISHUB KEPANJEN",
             "customerlabel" => "PUBLIC",
             "terminalUser"  => $TERMINALUSER,
-            "expiredDate"   => Carbon::parse($expired_at)->format('Y-m-d H:i:s'),
+            "expiredDate"   => $expired_at->format('Y-m-d H:i:s'),
             "amount"        => $total_tagihan
         ];
+
         $dataLog = [
             "code"              => $pd_nomor,
             "payment_category"  => "QRIS",
@@ -125,7 +124,8 @@ try{
         exit();
     }
 
-    mysqli_query($conn, "UPDATE tb_pendakian SET payment_number='$payment_number', metode_pembayaran_id='$metode_pembayaran_id' WHERE trx_pendakian_id='$trx_id'");
+    $pin_code = base64_encode($pin);
+    mysqli_query($conn, "UPDATE tb_pendakian SET payment_number='$payment_number', metode_pembayaran_id='$metode_pembayaran_id', code='$pin_code' WHERE trx_pendakian_id='$trx_id'");
 
     $respon = [
         "error"     => false,
@@ -140,10 +140,12 @@ try{
 }catch(Exception $e){
     $respon = [
         "error" => true,
-        "message" => $e,
+        "message" => $e->getMessage(),
         "data" => null
     ];
+
     header('Content-Type: application/json; charset=utf-8');
     echo json_encode($respon);
     exit();
 }
+

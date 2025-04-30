@@ -69,11 +69,11 @@ $token_user = $_SESSION['token'];
                         Tahura Raden Soerjo
                     </a>
                     <button class="navbar-toggler shadow-none ms-md-2" type="button" data-bs-toggle="collapse" data-bs-target="#navigation" aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation" >
-		          <span class="navbar-toggler-icon mt-2">
-		            <span class="navbar-toggler-bar bar1"></span>
-		            <span class="navbar-toggler-bar bar2"></span>
-		            <span class="navbar-toggler-bar bar3"></span>
-		          </span>
+                  <span class="navbar-toggler-icon mt-2">
+                    <span class="navbar-toggler-bar bar1"></span>
+                    <span class="navbar-toggler-bar bar2"></span>
+                    <span class="navbar-toggler-bar bar3"></span>
+                  </span>
                     </button>
                     <div class="collapse navbar-collapse w-100 pt-3 pb-2 py-lg-0" id="navigation">
                         <ul class="navbar-nav navbar-nav-hover ms-auto">
@@ -131,7 +131,7 @@ $token_user = $_SESSION['token'];
     </div>
 </header>
 
-    <?php
+<?php
     $sql        = mysqli_query($conn, "SELECT * FROM tb_pendakian WHERE pd_nomor='$_GET[inv]'");
     $trxSql     = mysqli_fetch_array($sql);
     $anggota    = mysqli_fetch_array(mysqli_query($conn, "SELECT COUNT(ap_pendakian)+1 as jml FROM tb_anggota_pendakian WHERE ap_pendakian = '$trxSql[pd_id]'"));
@@ -141,7 +141,7 @@ $token_user = $_SESSION['token'];
 
     $sqlPos  = mysqli_query($conn, "SELECT * FROM tb_pos_pendakian WHERE pp_id='$trxSql[pd_pos_pendakian]'");
     $rowPos  = mysqli_fetch_array($sqlPos);
-    ?>
+?>
 
 <section id="respon_trx" class="pt-3 pt-md-5 pb-md-5 pt-lg-7 bg-gray-200">
     <div class="container">
@@ -160,15 +160,19 @@ $token_user = $_SESSION['token'];
                                 <td width="1%">:</td>
                                 <td>
                                     <?php
-                                        if($trxSql['pd_status'] == "menunggu pembayaran"){
-                                            echo "<b style='color: #ff9d0a;'>Menunggu Pembayaran</b>";
-                                        }else if($trxSql['pd_status'] == "disetujui"){
-                                            echo "<b style='color: #26980d;'>Disetujui</b>";
-                                        }else if($trxSql['pd_status'] == "expired"){
-                                            echo "<b style='color: #ff0000;'>Kadaluwarsa</b>";
-                                        }else if($trxSql['pd_status'] == "cancel"){
-                                            echo "<b style='color: #9b9b9b ;'>Dibatalkan</b>";
-                                        }
+                                    if($trxSql['pd_status'] == "menunggu pembayaran"){
+                                        echo "<b class='text-primary'>MENUNGGU PEMBAYARAN</b>";
+                                    }else if($trxSql['pd_status'] == "menunggu verifikasi"){
+                                        echo "<b class='text-warning'>MENUNGGU VERIFIKASI</b>";
+                                    }else if($trxSql['pd_status'] == "disetujui"){
+                                        echo "<b class='text-success'>DISETUJUI</b>";
+                                    }else if($trxSql['pd_status'] == "ditolak"){
+                                        echo "<b class='text-danger'>DITOLAK</b>";
+                                    }else if($trxSql['pd_status'] == "sudah naik"){
+                                        echo "<b class='text-secondary'>SUDAH NAIK</b>";
+                                    }else if($trxSql['pd_status'] == "sudah turun"){
+                                        echo "<b class='text-secondary'>SUDAH TURUN</b>";
+                                    }
                                     ?>
                                 </td>
                             </tr>
@@ -178,20 +182,20 @@ $token_user = $_SESSION['token'];
                                 <td>Bank Jatim/BPD Jatim</td>
                             </tr>
                             <?php
-                                $metode_pembayaran_id = $trxSql['metode_pembayaran_id'];
-                                $metode_pembayaran    = mysqli_fetch_array(mysqli_query($conn, "SELECT * FROM metode_pembayaran WHERE id='$metode_pembayaran_id'"));
-                                if($metode_pembayaran['kategori'] == "VA"){ ?>
-                                    <tr>
-                                        <td>No. Virtual Account</td>
-                                        <td>:</td>
-                                        <td><?php echo $trxSql['payment_number'] ?></td>
-                                    </tr>
-                                <?php }else if($metode_pembayaran['kategori'] == "QRIS"){ ?>
-                                    <tr>
-                                        <td>QRIS</td>
-                                        <td>:</td>
-                                        <td><img class="img-qrcode" src="https://image-charts.com/chart?cht=qr&chl=<?php echo $trxSql['payment_number'] ?>&chs=75x75&choe=UTF-8&icqrf=00000000"/></td>
-                                    </tr>
+                            $metode_pembayaran_id = $trxSql['metode_pembayaran_id'];
+                            $metode_pembayaran    = mysqli_fetch_array(mysqli_query($conn, "SELECT * FROM metode_pembayaran WHERE id='$metode_pembayaran_id'"));
+                            if($metode_pembayaran['kategori'] == "VA"){ ?>
+                                <tr>
+                                    <td>No. Virtual Account</td>
+                                    <td>:</td>
+                                    <td><?php echo $trxSql['payment_number'] ?></td>
+                                </tr>
+                            <?php }else if($metode_pembayaran['kategori'] == "QRIS"){ ?>
+                                <tr>
+                                    <td>QRIS</td>
+                                    <td>:</td>
+                                    <td><img class="img-qrcode" src="https://image-charts.com/chart?cht=qr&chl=<?php echo $trxSql['payment_number'] ?>&chs=75x75&choe=UTF-8&icqrf=00000000"/></td>
+                                </tr>
                             <?php  } ?>
                             <tr>
                                 <td>Total Tagihan</td>
@@ -199,7 +203,7 @@ $token_user = $_SESSION['token'];
                                 <td><b><?php echo 'Rp. '.rupiah($trxSql['biaya']) ?></b></td>
                             </tr>
                             <tr>
-                                <td>Batas Waktu Pembayaran</td>
+                                <td>Sisa Waktu Pembayaran</td>
                                 <td>:</td>
                                 <td><b><?php echo  Carbon::createFromFormat('Y-m-d H:i:s', $trxSql['expired_at'])->format('d-m-Y H:i'); ?></b></td>
                             </tr>
@@ -240,6 +244,24 @@ $token_user = $_SESSION['token'];
                             </tr>
                         </table>
 
+                        <?php
+                        if ($trxSql['pd_status'] == 'menunggu pembayaran') { ?>
+                            <table class="table">
+                                <tr>
+                                    <td>
+                                        <h6 class="text-center text-sm mb-0">Jika sudah melakukan pembayaran silahkan klik tombol di bawah.</h6>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <input type="hidden" name="nomor" id="nomor" value="<?php echo $trxSql['pd_id'] ?>">
+                                        <button class="btn btn-rounded bg-gradient-warning me-2 btn-lg" style="width: 100%" id="bayar">saya sudah bayar</button>
+                                    </td>
+                                </tr>
+                            </table>
+                        <?php }
+                        ?>
+
                         <table class="table table-bordered">
                             <tbody>
                             <?php
@@ -251,7 +273,7 @@ $token_user = $_SESSION['token'];
                                                 <a href="simaksi.php?id=<?php echo $trxSql['pd_id'] ?>" target="_blank">
                                                     <i class="fa fa-file-pdf-o fa-5x" style="color: #0099CC"></i>
                                                     <div class="file-name text-center">
-                                                        Berkas eSIMAKSI.pdf
+                                                        Berkas eSimaksi.pdf
                                                     </div>
                                                 </a>
                                             </div>
