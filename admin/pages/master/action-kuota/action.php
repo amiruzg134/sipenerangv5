@@ -200,12 +200,9 @@ if($_GET['action'] == "detail"){
 
             $cekAvailable    = mysqli_fetch_array(mysqli_query($conn, "SELECT id FROM tiket_kuota 
                                 WHERE tb_gunung_id='$gunung_id' AND tb_pos_pendaki_id='$pos_id' AND date='$thisDate'"));
-            if(!isset($cekAvailable)){
-                $sql   = "INSERT INTO tiket_kuota (tb_gunung_id, date, stock, stock_available,
-                         price_weekday_wni, price_weekday_wna, price_weekend_wni, price_weekend_wna,
-                         tb_pos_pendaki_id, is_active) 
-                VALUES ('$gunung_id', '$thisDate', '$kuota', '$kuota', '$weekday_wni', 
-                '$weekday_wna', '$weekend_wni', '$weekend_wna', '$pos_id', true)";
+
+            if(!$cekAvailable){
+                $sql   = "INSERT INTO tiket_kuota (tb_gunung_id, date, stock, stock_available, price_weekday_wni, price_weekday_wna, price_weekend_wni, price_weekend_wna, tb_pos_pendaki_id, is_active) VALUES ('$gunung_id', '$thisDate', '$kuota', '$kuota', '$weekday_wni', '$weekday_wna', '$weekend_wni', '$weekend_wna', '$pos_id', true)";
                 mysqli_query($conn, $sql);
             }
         }
