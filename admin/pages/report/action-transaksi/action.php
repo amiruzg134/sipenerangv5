@@ -50,6 +50,7 @@ if($_GET['action'] == "detail"){
 //        }else{
 //            $verifikasi_pembayaran = "-";
 //        }
+
         if(isset($row['metode_pembayaran_id'])){
             $metode_pembayaran_id = $row['metode_pembayaran_id'];
             $sql_pembayaran = mysqli_fetch_array(mysqli_query($conn, "SELECT name, kategori FROM metode_pembayaran WHERE id='$metode_pembayaran_id'"));
@@ -139,6 +140,7 @@ if($_GET['action'] == "detail"){
                 "tarif"             => $row['biaya'] != null ? rupiah($row['biaya']) : 0,
                 "payment_number"    => $row['payment_number'],
                 "tgl_bayar"         => $row['tgl_bayar'] != null ? Carbon::parse($row['tgl_bayar'])->format('d-m-Y H:i') : "-",
+                "pd_status"         => $row['pd_status'],
                 "status_bayar"      => $row['sts_bayar'],
                 "metode_pembayaran" => $metode_pembayaran,
                 "is_reschedule"     => $row['is_reschedule'] != 0 ? true : false,
@@ -205,7 +207,7 @@ if($_GET['action'] == "detail"){
         }
 
         if($status_transaksi != null){
-            $sqlWhere .= " AND sts_bayar='$status_transaksi'";
+            $sqlWhere .= " AND pd_status='$status_transaksi'";
         }
 
         $sel = mysqli_query($conn,"select count(*) as allcount from tb_pendakian ".$sqlWhere.";");
@@ -224,17 +226,21 @@ if($_GET['action'] == "detail"){
 
         while ($row = mysqli_fetch_array($empRecords)) {
             $id    = $row['pd_id'];
-            if($row['sts_bayar'] == 'paid') {
-                $style = 'text-transform:uppercase;background-color:#51d108;color:#ffffff';
-            }else if($row['sts_bayar'] == 'unpaid') {
+            if($row['pd_status'] == 'menunggu pembayaran') {
+                $style = 'text-transform:uppercase;background-color:#dedede;color:#ffffff';
+            }else if($row['pd_status'] == 'menunggu verifikasi') {
                 $style = 'text-transform:uppercase;background-color:#ffc107;color:#ffffff';
-            }else if($row['sts_bayar'] == 'cancel') {
-                $style = 'text-transform:uppercase;background-color:#9b9b9b;color:#ffffff';
-            }else if($row['sts_bayar'] == 'expired') {
-                $style = 'text-transform:uppercase;background-color:#dc3545;color:#ffffff';
+            }else if($row['pd_status'] == 'disetujui') {
+                $style = 'text-transform:uppercase;background-color:#3bd536;color:#ffffff';
+            }else if($row['pd_status'] == 'ditolak') {
+                $style = 'text-transform:uppercase;background-color:#bf4336;color:#ffffff';
+            }else if($row['pd_status'] == 'sudah naik') {
+                $style = 'text-transform:uppercase;background-color:#36b6d5;color:#ffffff';
+            }else if($row['pd_status'] == 'sudah turun') {
+                $style = 'text-transform:uppercase;background-color:#36b6d5 ;color:#ffffff';
             }
 
-            $status = '<span class="label" style="'.$style.'">'.$row['sts_bayar'].'</span>';
+            $status = '<span class="label" style="'.$style.'">'.$row['pd_status'].'</span>';
 
 
             $data[] = array(

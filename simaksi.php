@@ -215,7 +215,7 @@ $codeContents ="id: $trx_id\nstatus: group";
             </td>
             <td style="width: 100px">
                 <img class="img-qrcode" src="https://image-charts.com/chart?cht=qr&chl=<?php echo $codeContents ?>&chs=75x75&choe=UTF-8&icqrf=00000000"/>
-                <p><center><strong>PIN <?php echo decrypt_openssl($rowPendaki['code'], getenv('KEYENCRIPT')); ?></strong></center></p>
+                <p><center><strong>PIN <?php echo base64_decode($rowPendaki['code']); ?></strong></center></p>
             </td>
         </tr>
         <tr>

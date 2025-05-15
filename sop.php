@@ -12,7 +12,7 @@
   <link rel="apple-touch-icon" sizes="76x76" href="./assets/img/apple-icon.png">
   <link rel="icon" type="image/png" href="./assets/img/logo.png">
   <title>
-    Book Pendakian Gunung Arjuno Welirang Pundak
+    SOP Pendakian Gunung Arjuno Welirang Pundak
   </title>
 
   <meta name="keywords" content="booking gunung arjuno welirang, booking gunung pundak, booking online, pendakian">
@@ -122,7 +122,7 @@
 	        </ul>
 	      </div>
 	      <div class="col-lg-9">
-	        <div class="card shadow-lg mb-5">
+					<div class="card shadow-lg mb-5">
 	          <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
 	            <div class="bg-gradient-primary shadow-primary border-radius-lg p-3">
 	              <h3 class="text-white mb-0">Syarat dan Ketentuan</h3>
@@ -142,8 +142,7 @@
 	              <li>Pendaki mancanegara wajib menggunakan jasa Guide sebagai penanggung jawab ketua rombongan;</li>
 	              <li>Pendaftaran <b class="text-primary">secara online</b> melalui website resmi Tahura Raden Soerjo;</li>
 	              <li>Konfirmasi pendaftaran akan diterima ketua rombongan melalui email atau whatsapp. Pastikan alamat email dan nomor telepon benar dan sesuai. Apabila tidak ada pesan pemberitahuan pada kotak masuk email, harap periksa pada kotak SPAM.</li>
-	              <li>Calon pendaki diizinkan melakukan pergantian anggota maksimal 1 (satu) kali, dengan batasan waktu 2 (dua) hari (H-2) sebelum keberangkatan. Ketua rombongan tidak dapat digantikan. Anggota kelompok yang dapat diganti maksimal 50% dari jumlah anggota.</li>
-	              <li>Penambahan anggota hanya bisa dilakukan sebelum pendaki melakukan pembayaran.</li>
+	              <li>Pendaki tidak dapat mengubah atau menambah anggota. Pastikan data anggota yang dimasukkan sudah benar sebelum melakukan melakukan booking.</li>
 	              <li>Pendaki harus melaksanakan pendakian sesuai dengan tanggal naik dan turun sesuai pada SIMAKSI. Petugas berhak menangguhkan jika pendaki naik tidak sesuai dengan tanggal pada SIMAKSI.</li>
 	              <li>Petugas pos perizinan berhak menolak pendaki yang terdaftar dalam <i>blacklist</i> dan pendaki yang tidak memenuhi persyaratan pendakian. </li>
 	              <li><b class="text-dark">BAGI YANG TERBUKTI MELAKUKAN MANIPULASI DAN/ATAU PEMALSUAN DATA, MAKA BOOKING AKAN DIBATALKAN DAN DIMASUKKAN DALAM <i>BLACKLIST.</i></b></li>
@@ -291,28 +290,34 @@
 	          	<h3 class="mb-3" id="lima">Checklist</h3>
 	          	<div class="mb-4 d-flex align-items-center">
                 <input class="language" type="checkbox" >
-                <span class=" ms-3 mb-0">Saya telah membaca, menyetujui, dan mengikuti semua peraturan dan ketentuan di atas.</span>
+                <span class=" ms-3 mb-0">Saya telah membaca, menyetujui, dan mengikuti semua peraturan dan ketentuan diatas</span>
               </div>
               <div class="d-flex align-items-center">
                 <input class="language" type="checkbox" >
-                <span class="ms-3 mb-0">Pendaki wajib membawa :</span>
+                <span class="ms-3 mb-0">Wajib untuk dibawa :</span>
               </div>
               <ol style="padding-left: 40px; font-size: 14px">
               	<li>eSIMAKSI (Surat Izin Masuk Kawasan Konservasi)</li>
-              	<li>KTP/KTM/SIM/Kartu Pelajar/Paspor yang masih berlaku</li>
-              	<li>Surat keterangan sehat (Arjuno Welirang)</li>
-              	<li>Pendaki usia kurang dari 17 tahun wajib menunjukkan surat izin dari orangtua/wali (Arjuno Welirang) <a href="surat_izin.pdf" target="_blank" class="text-primary">download</a> </li>
-              	<li>Trash bag/kantong sampah</li>
+              	<li>Membawa KTP/KTM/SIM/Paspor yang masih berlaku</li>
+              	<li>Pendaki usia kurang dari 17 tahun wajib menunjukkan surat izin dari orangtua/wali (khusus pendakian Arjuno Welirang) <a href="surat_izin.pdf" target="_blank" class="text-primary">download</a> </li>
+              	<li>Surat keterangan sehat (khusus pendakian Arjuno Welirang)</li>
+              	<li>Membawa trash bag/kantong sampah</li>
               </ol>
-						  <p class="note" style="color: red; display: none">centang persyaratan diatas</p>	
+						  <p class="note" style="color: red; display: none">centang persyaratan diatas</p>
 						  <div class="row">
 						  	<div class="col-md-12 text-center">
-						    	<button type="submit" class="btn bg-gradient-primary mb-0 submit btn-rounded btn-lg mt-3">setuju</button>
+								<?php
+									if (isset($_SESSION['uuid'])) { ?>
+											<button type="submit" class="btn bg-gradient-primary mb-0 submit btn-rounded btn-lg mt-3">setuju</button>
+									<?php } else { ?>
+										<a href="register.php" class="btn bg-gradient-primary mb-0 btn-rounded btn-lg mt-3">Register</a>
+										<a href="login.php" class="btn bg-gradient-primary mb-0 btn-rounded btn-lg mt-3">Login</a>
+									<?php } ?>
                 </div>
 						  </div>
-	        	</div>
-	      	</div>
-	    	</div>
+	        </div>
+	      </div>
+	    </div>
 	  </div>
 	</section>
 
@@ -323,10 +328,7 @@
         <div class="col-12">
           <div class="text-center">
             <p class="text-dark my-4 text-sm font-weight-normal">
-              All rights reserved. Copyright ©
-              <script>
-                document.write(new Date().getFullYear())
-              </script>
+              All rights reserved. © 2019
               <a href="https://tahurarsoerjo.dishut.jatimprov.go.id" target="_blank">UPT Tahura Raden Soerjo.</a>
             </p>
           </div>

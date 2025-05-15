@@ -23,16 +23,19 @@ session_start();
                         <div class="row">
                             <div class="col-md-12 text-primary">
                                 <div class="row align-items-center">
-                                    <div class="col-md-8">
+                                    <div class="col-md-6">
                                         <i class="fa fa-arrow-right"></i> &nbsp;
                                         <strong>Data Ketua Regu</strong>
                                     </div>
-                                    <div class="col-md-4">
+                                    <div class="col-md-6">
                                         <button class="btn btn-info" style="float: right" type="button" name="btn_reload_detail" id="btn_reload_detail">
                                             <i class="fa fa-refresh" aria-hidden="true"></i> Reload
                                         </button>
                                         <span class="badge bg-success fw-bold me-2" style="float: right;margin-right: 10px;padding: 10px;" id="tx_status_data">
                                             Status data : -
+                                        </span>
+                                        <span class="badge bg-success fw-bold me-2" style="float: right;margin-right: 10px;padding: 10px;" id="tx_status_data_pendaki">
+                                            Status Pendaki : -
                                         </span>
                                     </div>
                                 </div>
@@ -374,22 +377,22 @@ session_start();
                     if (json?.data?.anggota) {
                         $.each(json.data.anggota, function (key, value) {
                             $('#data_anggota').append("<tr>\
-										<td>" + value.nama + "</td>\
-										<td>" + value.no_identitas + "</td>\
-										<td>" + value.no_telp + "</td>\
-										<td>" + value.kewarganegaraan + "</td>\
-										<td>" + value.gender + "</td>\
-										</tr>");
+                                        <td>" + value.nama + "</td>\
+                                        <td>" + value.no_identitas + "</td>\
+                                        <td>" + value.no_telp + "</td>\
+                                        <td>" + value.kewarganegaraan + "</td>\
+                                        <td>" + value.gender + "</td>\
+                                        </tr>");
                         })
                     }
 
                     if (json?.data?.emergency) {
                         $.each(json.data.emergency, function (key, value) {
                             $('#data_emergency').append("<tr>\
-										<td>" + value.nama + "</td>\
-										<td>" + value.no_telp + "</td>\
-										<td>" + value.hubungan + "</td>\
-										</tr>");
+                                        <td>" + value.nama + "</td>\
+                                        <td>" + value.no_telp + "</td>\
+                                        <td>" + value.hubungan + "</td>\
+                                        </tr>");
                         })
                     }
 
@@ -428,9 +431,27 @@ session_start();
                     document.getElementById("reschedule_start_date").value = json.data.informasi.reschedule_tgl_naik;
                     document.getElementById("reschedule_end_date").value = json.data.informasi.reschedule_tgl_turun;
 
+
+                    var status_pendaki = document.getElementById("tx_status_data_pendaki");
+                    status_pendaki.textContent = json.data.informasi.pd_status;
+                    if (json.data.informasi.pd_status == "menunggu pembayaran"){
+                        status_pendaki.style.backgroundColor = "#dedede";
+                    }else if(json.data.informasi.pd_status == "menunggu verifikasi"){
+                        status_pendaki.style.backgroundColor = "#ffc107";
+                    }else if(json.data.informasi.pd_status == "disetujui"){
+                        status_pendaki.style.backgroundColor = "#3bd536";
+                    }else if(json.data.informasi.pd_status == "ditolak"){
+                        status_pendaki.style.backgroundColor = "#bf4336";
+                    }else if(json.data.informasi.pd_status == "sudah naik"){
+                        status_pendaki.style.backgroundColor = "#36b6d5";
+                    }else if(json.data.informasi.pd_status == "sudah turun"){
+                        status_pendaki.style.backgroundColor = "#36b6d5";
+                    }
+
                     if(json.data.informasi.status_bayar == "paid") {
                         if(json.data.informasi.is_reschedule){
                             if(json.data.informasi.status_reschedule == null){
+                                document.getElementById("btn_konfirmasi_reschedule").style.display = "none";
                                 document.getElementById("info_reschedule").style.display = "none";
                             }else if(json.data.informasi.status_reschedule == 1){
                                 document.getElementById("btn_konfirmasi_reschedule").style.display = "block";
@@ -444,7 +465,8 @@ session_start();
                                 document.getElementById("info_reschedule").textContent = "Pengajuan Reschedule ditolak";
                             }
                         }else{
-                            document.getElementById("btn_konfirmasi_reschedule").style.display = "block";
+                            document.getElementById("btn_konfirmasi_reschedule").style.display = "none";
+                            document.getElementById("info_reschedule").style.display = "none";
                         }
 
 

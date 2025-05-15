@@ -35,6 +35,12 @@ try{
     $trx_pendakian_id = $entityBody->trx_pendakian_id;
     $user_id_tiket_pendakian = $entityBody->user_id_tiket_pendakian;
 
+    $responseDataTiketPendakian = [
+        "code"              => $pd_nomor,
+        "log"               => $entityBody,
+    ];
+    logPayment('RESPONSE_TIKET_PENDAKIAN', $responseDataTiketPendakian);
+
     $gunung = mysqli_fetch_array(mysqli_query($conn, "SELECT * FROM tb_gunung WHERE mountain_id='$tb_gunung_id'"));
     $gunung_id = $gunung['id'];
 
@@ -162,5 +168,4 @@ try{
     echo json_encode($respon);
     exit();
 }
-
 

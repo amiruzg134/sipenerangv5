@@ -1,9 +1,5 @@
 <?php 
   session_start();
-  if (!isset($_SESSION['loggedin'])) {
-    header('Location: index.php');
-    exit;
-  }
   include 'config/connection.php';
   include 'config.php';
   $token_user = $_SESSION['token'];
@@ -34,19 +30,6 @@
 
   <style>
     .async-hide { opacity: 0 !important}
-    .input-border{
-        border: 1px solid #d5d5d5;
-        padding-left: 10px;
-        padding-right: 10px;
-        border-radius: 20px;
-    }
-    .input-border:focus {
-        outline: none !important;
-        border-color: #9dc7f3;
-        box-shadow: 0 0 10px #94bce7;
-        border-radius: 20px;
-    }
-
 
     .ui-datepicker {
         font-family: Arial, sans-serif;
@@ -107,10 +90,19 @@
         z-index: 9999 !important; /* Pastikan datepicker memiliki z-index tinggi */
         position: absolute; /* Supaya menyesuaikan posisi secara tepat */
     }
+
+    .form-control#gunung, .form-control#pos{
+        padding: .3rem 1rem;
+    }
+
+    .kolom .form-control{
+        padding: .5rem 1rem;
+    }
   </style>
 </head>
 
 <body class="presentation-page bg-gray-200">
+
 	<div class="container position-sticky top-0" style="z-index: 3; background: white;">
 		<div class="row">
 		  <div class="col-12">
@@ -197,29 +189,28 @@
     </div>
 
 	<form autocomplete="off" method="post" action="">
-
 		<div class="card card-body blur shadow-blur mx-3 mx-md-4 mt-n6" id="div_pemesanan" style="display: none;">
-		  <div class="container">
+		  <div class="container mt-4">
 		    <div class="row border-radius-md pb-4 mx-sm-0 mx-1 position-relative">
 		    	<div class="col-lg-10">
 		    		<div class="row">
                         <input type="hidden" id="max_date" name="max_date">
-                        <div class="col-lg-3 mt-lg-n2 mt-2">
-                            <label for="gunung">Gunung:</label>
+                        <div class="col-lg-4 mt-lg-n2 mt-2">
+                            <label for="gunung">Gunung</label>
                             <select class="form-control" name="gunung" id="gunung" required>
                                 <option value=""></option>
                             </select>
                         </div>
 
-                        <div class="col-lg-3 mt-lg-n2 mt-2">
-                            <label for="pos">Pos Pendakian:</label>
+                        <div class="col-lg-2 mt-lg-n2 mt-2">
+                            <label for="pos">Pos Pendakian</label>
                             <select class="form-control" name="pos" id="pos" required>
                                 <option value="">- Pilih -</option>
                             </select>
                         </div>
 
                         <div class="col-lg-2 mt-lg-n2 mt-2">
-                            <label class="ms-0">Total Anggota</label>
+                            <label class="ms-0">Jumlah Pendaki</label>
                             <div class="input-group input-group-static">
                                 <input name="total_anggota" class="form-control" id="total_anggota" type="number" required>
                             </div>
@@ -240,8 +231,10 @@
 								</div>
 				      </div>
 			    	</div>
-                    <p><span id="informasi_tanggal" style="display: none; color: red;"></span></p>
-                    <p><span id="informasi_status_akun" style="display: none; color: gray;"></span></p>
+                    <p class="mt-2">
+                        <span id="informasi_tanggal" style="display: none;" class="text-primary"></span>
+                        <span id="informasi_status_akun" style="display: none;" class="text-info"></span>
+                    </p>
 		    	</div>
 		    	<div class="col-lg-2">
 			      <div class="col-lg-12 mt-4">
@@ -253,16 +246,14 @@
 		</div>
 	</form>
 
-    <div class="card card-body blur shadow-blur mx-3 mx-md-4 mt-n6" id="status_user_verified" style="display: none; margin-top: 10px !important;">
-        <div class="container">
-            <div class="row border-radius-md pb-4 mx-sm-0 mx-1 position-relative">
+    <div class="card card-body blur shadow-blur mx-3 mx-md-4 mt-4" id="status_user_verified" style="display: none;">
+        <div class="container mt-4">
+            <div class="row border-radius-md mx-sm-0 mx-1 position-relative">
+                <button type='button' style='border-radius: 10px;' onclick='showModalVerifikasiAkun()' class='btn btn-info'>Verifikasi Akun</button>
                 <span>
-                    <p>
-                        Status Akun : <span id="status_akun_verified" style="font-weight: bold;"></span>
-                    </p>
+                    <p> Status Akun : <span id="status_akun_verified" style="font-weight: bold;"></span> </p>
                 </span>
-                <button type='button' style='border-radius: 10px;' onclick='showModalVerifikasiAkun()' class='btn btn-info btn-sm'>Verifikasi Akun</button>
-                <p>Log Verifikasi:</p>
+                <!-- <p>Log Verifikasi:</p> -->
                 <ul id="log_user_verification">
 
                 </ul>
@@ -270,161 +261,168 @@
         </div>
     </div>
 
-
     <form action="" method="post">
-    <div id="profile_pemesan" style="display: none;">
-        <input type="hidden" id="token_user" name="token_user" value="<?php echo $token_user; ?>">
-        <input type="hidden" id="ketua_is_wni" name="ketua_is_wni">
-        <input type="hidden" id="umur_ketua" name="umur_ketua">
-        <input type="hidden" id="tb_pos_pendakian_id" name="tb_pos_pendakian_id">
-        <input type="hidden" id="tb_gunung_id" name="tb_gunung_id">
-        <input type="hidden" id="tb_start_date" name="tb_start_date">
-        <input type="hidden" id="tb_end_date" name="tb_end_date">
+        <section id="profile_pemesan" style="display: none;">
+            <input type="hidden" id="token_user" name="token_user" value="<?php echo $token_user; ?>">
+            <input type="hidden" id="ketua_is_wni" name="ketua_is_wni">
+            <input type="hidden" id="umur_ketua" name="umur_ketua">
+            <input type="hidden" id="tb_pos_pendakian_id" name="tb_pos_pendakian_id">
+            <input type="hidden" id="tb_gunung_id" name="tb_gunung_id">
+            <input type="hidden" id="tb_start_date" name="tb_start_date">
+            <input type="hidden" id="tb_end_date" name="tb_end_date">
 
-        <div class="col-lg-9 col-12 mx-auto">
-            <div class="row">
-                <div class="card" style="margin-top: 10px;padding-bottom: 10px;">
-                    <div class="card-header pb-0 p-3">
-                        <div class="row">
-                            <div class="col-12 d-flex align-items-center">
-                                <h6 class="mb-0">Data Pemesan</h6>
-                            </div>
-                            <span>
-                                <small style="color: red;">! Data pemesan secara otomatis terisi dari data profil login anda.</small>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
+            <div class="col-lg-9 col-12 mt-4 mx-auto">
+                <div class="container">
+                    <div class="card">
+                        <div class="card-header pb-0">
                             <div class="row">
-                                <div class="col-md-6">
-                                    <label class="form-label mt-4">Nama Depan</label>
-                                    <div class="input-group">
-                                        <input class="form-control input-border" type="text" name="first_name" id="first_name" readonly>
-                                    </div>
+                                <div class="col-12 d-flex align-items-center">
+                                    <h6 class="mb-0">Data Ketua Pendaki</h6>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="form-group" style="margin-bottom: 0">
-                                        <label class="form-label mt-4">Nama Belakang</label>
-                                        <div class="input-group">
-                                            <input class="form-control input-border" type="text" name="last_name" id="last_name" readonly>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <label class="form-label mt-4">Nomor Identitas <small id="id_card_type"></small></label>
-                            <div class="input-group">
-                                <input class="form-control input-border" type="text"  name="id_card_number" id="id_card_number" value="" readonly>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <label class="form-label mt-4">Tempat Lahir</label>
-                                    <div class="input-group">
-                                        <input class="form-control input-border" type="text" id="place_birth" name="place_birth" readonly>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group" style="margin-bottom: 0">
-                                        <label class="form-label mt-4">Tanggal Lahir</label>
-                                        <div class="input-group">
-                                            <input class="form-control input-border" type="text" name="date_birth" id="date_birth" readonly>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <label class="form-label mt-4">No. Telepon</label>
-                            <div class="input-group">
-                                <input class="form-control input-border" type="text" name="phone" id="phone" readonly>
-                            </div>
-                            <label class="form-label mt-4">Email</label>
-                            <div class="input-group">
-                                <input class="form-control input-border" type="text" id="email" name="email" readonly>
-                            </div>
-                            <label class="form-label mt-4">Jenis Kelamin</label>
-                            <div class="input-group">
-                                <input class="form-control input-border" type="text" id="gender" name="gender" readonly>
+                                <span>
+                                    <span class="text-primary text-sm">Data pendaki secara otomatis terisi dari data profil login anda.</span>
+                                </span>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <label class="form-label mt-4">Alamat</label>
-                            <div class="input-group">
-                                <textarea class="form-control input-border" style="height: 50px;border-radius: 5px;" type="text" id="address" name="address" readonly></textarea>
-                            </div>
+                        <div class="card-body kolom">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label class="form-label mt-4">Nama Depan</label>
+                                            <div class="input-group">
+                                                <input class="form-control input-border" type="text" name="first_name" id="first_name" readonly>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group" style="margin-bottom: 0">
+                                                <label class="form-label mt-4">Nama Belakang</label>
+                                                <div class="input-group">
+                                                    <input class="form-control input-border" type="text" name="last_name" id="last_name" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
 
-                            <label class="form-label mt-4" style="margin-top: 15px !important;">Provinsi</label>
-                            <input type="hidden" name="province_code" id="province_code">
-                            <div class="input-group">
-                                <input class="form-control input-border" type="text" name="province_name" id="province_name" readonly>
-                            </div>
+                                    <label class="form-label mt-4">Nomor Identitas <small id="id_card_type"></small></label>
+                                    <div class="input-group">
+                                        <input class="form-control input-border" type="text"  name="id_card_number" id="id_card_number" value="" readonly>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label class="form-label mt-4">Tempat Lahir</label>
+                                            <div class="input-group">
+                                                <input class="form-control input-border" type="text" id="place_birth" name="place_birth" readonly>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group" style="margin-bottom: 0">
+                                                <label class="form-label mt-4">Tanggal Lahir</label>
+                                                <div class="input-group">
+                                                    <input class="form-control input-border" type="text" name="date_birth" id="date_birth" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <label class="form-label mt-4">No. Telepon</label>
+                                    <div class="input-group">
+                                        <input class="form-control input-border" type="text" name="phone" id="phone" readonly>
+                                    </div>
+                                    <label class="form-label mt-4">Email</label>
+                                    <div class="input-group">
+                                        <input class="form-control input-border" type="text" id="email" name="email" readonly>
+                                    </div>
+                                    <label class="form-label mt-4">Jenis Kelamin</label>
+                                    <div class="input-group">
+                                        <input class="form-control input-border" type="text" id="gender" name="gender" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label mt-4">Alamat</label>
+                                    <div class="input-group">
+                                        <textarea class="form-control input-border" style="height: 50px;border-radius: 5px;" type="text" id="address" name="address" readonly></textarea>
+                                    </div>
 
-                            <input type="hidden" id="city_code" name="city_code">
-                            <label class="form-label mt-4">Kabupaten/Kota</label>
-                            <div class="input-group">
-                                <input class="form-control input-border" type="text" id="city_name" name="city_name" readonly>
-                            </div>
-                            <input type="hidden" id="district_code" name="district_code">
-                            <label class="form-label mt-4">Kecamatan</label>
-                            <div class="input-group">
-                                <input class="form-control input-border" type="text" id="district_name" name="district_name" readonly>
-                            </div>
-                            <input type="hidden" id="village_code" name="village_code">
-                            <label class="form-label mt-4">Desa/Kelurahan</label>
-                            <div class="input-group">
-                                <input class="form-control input-border" type="text" id="village_name" name="village_name" readonly>
-                            </div>
-                            <input type="hidden" id="is_wni" name="is_wni">
-                            <label class="form-label mt-4">Kewarganegaraan</label>
-                            <div class="input-group">
-                                <input class="form-control input-border" type="text" id="data_wni" name="data_wni" readonly>
-                            </div>
+                                    <label class="form-label mt-4" style="margin-top: 15px !important;">Provinsi</label>
+                                    <input type="hidden" name="province_code" id="province_code">
+                                    <div class="input-group">
+                                        <input class="form-control input-border" type="text" name="province_name" id="province_name" readonly>
+                                    </div>
+
+                                    <input type="hidden" id="city_code" name="city_code">
+                                    <label class="form-label mt-4">Kabupaten/Kota</label>
+                                    <div class="input-group">
+                                        <input class="form-control input-border" type="text" id="city_name" name="city_name" readonly>
+                                    </div>
+                                    <input type="hidden" id="district_code" name="district_code">
+                                    <label class="form-label mt-4">Kecamatan</label>
+                                    <div class="input-group">
+                                        <input class="form-control input-border" type="text" id="district_name" name="district_name" readonly>
+                                    </div>
+                                    <input type="hidden" id="village_code" name="village_code">
+                                    <label class="form-label mt-4">Desa/Kelurahan</label>
+                                    <div class="input-group">
+                                        <input class="form-control input-border" type="text" id="village_name" name="village_name" readonly>
+                                    </div>
+                                    <input type="hidden" id="is_wni" name="is_wni">
+                                    <label class="form-label mt-4">Kewarganegaraan</label>
+                                    <div class="input-group">
+                                        <input class="form-control input-border" type="text" id="data_wni" name="data_wni" readonly>
+                                    </div>
+                                </div>
+                            </div>  
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
+        </section>
 
 
-    <section id="respon_anggota" style="display: none; margin-top: 10px !important;">
-        <div class="col-lg-9 col-12 mx-auto">
-            <div class="row">
-                <div class="card">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <label style="font-size: 15px;margin: 10px;font-weight: bold;">Data Anggota: </label>
-                            <p>
-                                <small style="color: red;">! Masukan email anggota yang sudah terdaftar di website tahura/aplikasi tiket pendakian, jika belum memiliki akun silakan daftar di website tahura/aplikasi tiket pendakian.</small>
-                            </p>
-
-                            <div class="card-body" id="form_anggota">
+        <section id="respon_anggota" style="display: none;">
+            <div class="col-lg-9 col-12 mt-4 mx-auto">
+                <div class="container">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="row">
+                                <div class="col-12 d-flex align-items-center">
+                                    <h6 class="mb-0">Data Anggota</h6>
+                                </div>
+                                <span>
+                                    <span class="text-primary text-sm">Masukkan email anggota yang sudah terdaftar di website booking atau aplikasi Tiket Pendakian. Jika belum memiliki akun, silahkan daftar terlebih dahulu.</span>
+                                </span>
                             </div>
+                        </div>
+                        <div class="card-body" id="form_anggota">
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
 
-    <section id="detail_kamera" style="display: none; margin-top: 10px !important;">
-        <div class="col-lg-9 col-12 mx-auto">
-            <div class="row">
-                <div class="card">
-                    <div class="row" style="padding: 10px;">
-                        <div class="col-lg-12">
-                            <label style="font-size: 15px;margin: 10px;font-weight: bold;">Penambahan Kamera: </label>
-                            <p>
-                                <small style="color: grey;">! Masukan total kamera yang anda bawa.</small>
-                            </p>
+        <section id="detail_kamera" style="display: none;">
+            <div class="col-lg-9 col-12 mt-4 mx-auto">
+                <div class="container">
+                    <div class="card">
+                        <div class="card-header pb-0">
+                            <div class="row">
+                                <div class="col-12 d-flex align-items-center">
+                                    <h6 class="mb-0">Penggunaan Kamera</h6>
+                                </div>
+                                <span>
+                                    <span class="text-primary text-sm">Masukkan jumlah kamera yang anda bawa.</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="card-body">   
                             <div class='row'>
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     <label class="ms-0">Kamera Pendaki WNI</label>
                                     <div class="input-group input-group-static">
                                         <input name="camwni" id="camwni" class="form-control" type="number" min="0" value="0" required placeholder="0">
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     <label class="ms-0">Kamera Pendaki WNA</label>
                                     <div class="input-group input-group-static">
                                         <input name="camwna" id="camwna" class="form-control" type="number" min="0" value="0" required placeholder="0">
@@ -435,59 +433,33 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
 
-    <section id="respon_summary" style="display: none; margin-top: 10px !important;">
-        <div class="col-lg-9 col-12 mx-auto">
-            <div class="row">
-                <div class="card">
-                    <div class="row">
-                        <div class="col-lg-8">
-                            <div class="card-body">
-                                <h3 class="text-dark"></h3>
-                                <label class="form-label mt-4">Rincian biaya :</label>
-                                <ul id="summary">
-
-                                </ul>
+        <section id="respon_summary" style="display: none;">
+            <div class="col-lg-9 col-12 mt-4 mx-auto">
+                <div class="container">
+                    <div class="card">
+                        <div class="card-header pb-0">
+                            <div class="row">
+                                <div class="col-12 d-flex align-items-center">
+                                    <h6 class="mb-0">Rincian Biaya</h6>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-lg-4 my-auto" style="text-align: center;">
-                            <h6 class="mt-sm-4 mt-0 mb-0">Total Tagihan Pembayaran</h6>
-                            <h1 class="mt-0">
-                                <span id="summary_total_bayar"></span>
-                            </h1>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <ul id="summary">
 
-        <section id="div_metode_pembayaran" style="display: none; margin-top: 10px !important;">
-            <div class="col-lg-9 col-12 mx-auto">
-                <div class="row">
-                    <div class="card">
-
-                        <div id="div_informasi_surat_izin" style="display: none; margin-top: 10px !important;">
-                            <span style="color: red; font-weight: bold;">Informasi:</span><br>
-                            <span style="color: red;">
-                                Pendaki usia kurang dari 17 tahun wajib menunjukkan surat izin dari orangtua/wali
-                                (khusus pendakian Arjuno Welirang).
-                            </span>
-                            <ul id="list_dibawah_umur"></ul>
-                            <br>
-                            <a href="surat_izin.pdf" target="_blank" class="btn btn-info">Download Surat Izin</a>
-                        </div>
-
-                        <div class="form-group" style="margin-top: 20px;">
-                            <label class="col-sm-4 control-label" style="font-weight: bold;">Pilih Metode Pembayaran: </label>
-                            <div class="col-sm-12">
-                                <select name="metode_pembayaran" id="metode_pembayaran" class="form-control"
-                                        style="background: #f2f2f2;padding: 10px;margin-bottom: 10px;">
-                                    <option disabled selected> -- Pilih Pembayaran -- </option>
-                                </select>
+                                    </ul>
+                                </div>
+                                <div class="col-lg-4 my-auto" style="text-align: center;">
+                                    <h6 class="mt-sm-4 mt-0 mb-0">Total Tagihan Pembayaran</h6>
+                                    <h1 class="mt-0">
+                                        <span id="summary_total_bayar"></span>
+                                    </h1>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -495,12 +467,46 @@
             </div>
         </section>
 
-        <div class="d-flex justify-content-end mt-4" style="margin: 140px;">
-            <button style="display: none;" type="button" name="checkout" id="checkout" class="btn bg-gradient-primary w-100 mb-0">
-                <span id="btn-text-proses">Booking</span>
-                <div class="spinner-border spinner-border-sm" role="status" id="loading" style="display: none;">
+
+        <section id="div_metode_pembayaran" style="display: none;">
+            <div class="col-lg-9 col-12 mt-4 mx-auto">
+                <div class="container">
+                    <div class="card">
+                        <div class="card-body">
+                            <div id="div_informasi_surat_izin" style="display: none; margin-top: 10px !important;">
+                                <span style="font-weight: bold;" class="text-danger">Informasi : </span><br>
+                                <span class="text-danger">
+                                    Khusus pendaki Gunung Arjuno Welirang usia kurang dari 17 tahun wajib menunjukkan surat izin dari orangtua/wali
+                                </span>
+                                <ul id="list_dibawah_umur" class="text-dark"></ul>
+                                <a href="surat_izin.pdf" target="_blank" class="btn btn-info">Download Surat Izin</a>
+                            </div>
+
+                            <div class="form-group" style="margin-top: 20px;">
+                                <label class="col-sm-4 control-label" style="font-weight: bold;">Pilih Metode Pembayaran: </label>
+                                <div class="col-sm-12">
+                                    <select name="metode_pembayaran" id="metode_pembayaran" class="form-control"
+                                            style="background: #f2f2f2;padding: 10px;margin-bottom: 10px;">
+                                        <option disabled selected> -- Pilih Pembayaran -- </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </button>
+            </div>
+        </section>
+
+        <div class="col-lg-9 col-12 mt-4 mx-auto">
+            <div class="container">
+                <div class="d-flex justify-content-end">
+                    <button style="display: none;" type="button" name="checkout" id="checkout" class="btn bg-gradient-primary w-100 mb-0">
+                        <span id="btn-text-proses">Booking</span>
+                        <div class="spinner-border spinner-border-sm" role="status" id="loading" style="display: none;">
+                        </div>
+                    </button>
+                </div>
+            </div>
         </div>
     </form>
 
@@ -629,7 +635,6 @@
     <input type="hidden" id="data_anggota8" name="data_anggota8">
     <input type="hidden" id="data_anggota9" name="data_anggota9">
 
-
     <input type="hidden" id="save_total_anggota" name="save_total_anggota">
 
     <input type="hidden" id="save_kw_anggotake1" name="save_kw_anggotake1">
@@ -672,24 +677,21 @@
     <input type="hidden" id="save_email_anggotake10" name="save_email_anggotake10">
     <input type="hidden" id="save_umur_anggotake10" name="save_umur_anggotake10">
 
-  <!-- FOOTER -->
-  <footer class="footer pt-5 mt-5">
-    <div class="container">
-      <div class="row">
-        <div class="col-12">
-          <div class="text-center">
-            <p class="text-dark my-4 text-sm font-weight-normal">
-              All rights reserved. Copyright ©
-              <script>
-                document.write(new Date().getFullYear())
-              </script>
-              <a href="https://tahurarsoerjo.dishut.jatimprov.go.id" target="_blank">UPT Tahura Raden Soerjo.</a>
-            </p>
+    <!-- FOOTER -->
+    <footer class="footer pt-5 mt-5">
+        <div class="container">
+          <div class="row">
+            <div class="col-12">
+              <div class="text-center">
+                <p class="text-dark my-4 text-sm font-weight-normal">
+                  All rights reserved. © 2019
+                  <a href="https://tahurarsoerjo.dishut.jatimprov.go.id" target="_blank">UPT Tahura Raden Soerjo.</a>
+                </p>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
-  </footer>
+    </footer>
 
     <script src="./assets/js/core/popper.min.js" type="text/javascript"></script>
     <script src="./assets/js/core/jquery-min.js" type="text/javascript"></script>
@@ -704,7 +706,6 @@
     <script src="./assets/js/plugins/nouislider.min.js" type="text/javascript"></script>
     <script src="./assets/js/plugins/anime.min.js" type="text/javascript"></script>
     <script src="./assets/js/material-kit-pro.min.js?v=3.0.2" type="text/javascript"></script>
-<!--    <script src="assets/js/plugins/flatpickr.min.js"></script>-->
 
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
@@ -822,16 +823,16 @@
                                 $.each(json.data.log_verified, function (key, value) {
                                     $('#log_verification').append("<li><strong>\Waktu: "+ value.waktu+"</strong>\
                                         <table class='table table-bordered' style='margin-top: 0.5rem;border: 0px solid #f0f8ff00;'>\
-										<tr>\
-										<td width='50'>Status:</td>\
-										<td>"+value.status_verified_account+"</td>\
-										</tr>\
+                                        <tr>\
+                                        <td width='50'>Status:</td>\
+                                        <td>"+value.status_verified_account+"</td>\
+                                        </tr>\
                                         <tr>\
                                             <td width='50'>Catatan:</td>\
                                             <td>"+value.catatan+"</td>\
                                         </tr>\
-										</table>\
-										</li>");
+                                        </table>\
+                                        </li>");
                                 })
                             }
                         }
@@ -863,7 +864,7 @@
             var is_enable_button_pengajuan = $('#is_enable_button_pengajuan').val();
             var status_pengajuan = $('#verified_user_status').val();
             if (!is_enable_button_pengajuan){
-                alert("Maaf anda tidak dapat melakukan pengajuan, karena status akun anda saat ini adalah : "+status_pengajuan)
+                alert("Maaf anda tidak dapat melakukan pengajuan ulang, status akun anda saat ini : "+status_pengajuan)
             }else{
                 window.location.href = url_path;
             }
@@ -1014,6 +1015,10 @@
 
         $(document).ready(function() {
             $('#cek_kuota').click(function () {
+
+                document.getElementById("camwni").value = 0;
+                document.getElementById("camwna").value = 0;
+
                 var total_anggota = $('#total_anggota').val();
                 var gunung = $('#gunung').val();
                 var pos = $('#pos').val();
@@ -1097,14 +1102,14 @@
                             document.getElementById("summary_total_bayar").textContent= json.data.total_bayar;
                             $.each(json.data.detail, function (key, value) {
                                 $('#summary').append("<li>\Tanggal "+ value.waktu +" ("+value.status_hari+")\
-										<table class='table table-bordered' style='margin-top: 0.5rem'>\
-										<tr>\
-										<td>"+value.warganegara+"</td>\
-										<td>"+value.keterangan+"</td>\
-										<td>"+value.total+"</td>\
-										</tr>\
-										</table>\
-										</li>");
+                                        <table class='table table-bordered' style='margin-top: 0.5rem'>\
+                                        <tr>\
+                                        <td>"+value.warganegara+"</td>\
+                                        <td>"+value.keterangan+"</td>\
+                                        <td>"+value.total+"</td>\
+                                        </tr>\
+                                        </table>\
+                                        </li>");
                             })
 
                             if (total_anggota > 1){
@@ -1113,35 +1118,37 @@
                                 for (var i=1; i< total_anggota; i++) {
                                     text += "<form method='post' action='' id='formanggota"+i+"' class='cek_anggota"+i+"'>";
                                     text += "<div class='row'>";
+
                                     text += "<div class='col-md-6'>";
                                     text += "<div class='input-group'>";
                                     text += "<input class='form-control input-border' placeholder='Masukan Email Anggota' type='text' id='email_anggotake"+i+"' name='email_anggotake"+i+"'>";
                                     text += "</div>";
                                     text += "<p><span style='color: red;margin-left: 10px;' id='informasi_anggota"+i+"'></span></p>";
                                     text += "</div>";
-                                    text += "<div class='col-md-2'>";
+
+                                    text += "<div class='col-md-1 col-4'>";
                                     text += "<div class='form-group'>";
-                                    text += "<div class='input-group' style='margin-top: 5px;'>";
-                                    text += "<button type='button' style='display: block;border-radius: 10px;' onclick='cekAnggota("+i+")'  name='cek_anggota"+i+"' id='cek_anggota"+i+"' class='btn btn-primary btn-sm cek_anggota"+i+"'>";
+                                    text += "<div class='input-group'>";
+                                    text += "<h4 id='anggota_status"+i+"' class='mx-auto'></h4>";
+                                    text += "</div>";
+                                    text += "</div>";
+                                    text += "</div>";
+
+                                    text += "<div class='col-md-1 col-4'>";
+                                    text += "<div class='form-group'>";
+                                    text += "<button type='button' style='display: block;' onclick='cekAnggota("+i+")'  name='cek_anggota"+i+"' id='cek_anggota"+i+"' class='btn bg-gradient-primary  cek_anggota"+i+"'>";
                                     text += "<span id='btn-text-proses"+i+"'>Tambah</span>";
                                     text += "<div class='spinner-border spinner-border-sm' id='loading"+i+"' style='display: none;'>";
                                     text += "</div>";
                                     text += "</button>";
-                                    text += "<button type='button' style='display: none;border-radius: 10px;' onclick='detailAnggota("+i+")' name='detail_anggota"+i+"' id='detail_anggota"+i+"' class='btn btn-info btn-sm detail_anggota"+i+"'>Detail</button>";
+                                    text += "<button type='button' style='display: none;' onclick='detailAnggota("+i+")' name='detail_anggota"+i+"' id='detail_anggota"+i+"' class='btn bg-gradient-info detail_anggota"+i+"'>Detail</button>";
                                     text += "</div>";
                                     text += "</div>";
-                                    text += "</div>";
-                                    text += "<div class='col-md-2'>";
+
+                                    text += "<div class='col-md-2 col-4'>";
                                     text += "<div class='form-group'>";
-                                    text += "<div class='input-group' style='margin-top: 10px;font-weight: bold;'>";
-                                    text += "<span id='anggota_status"+i+"'></span>";
-                                    text += "</div>";
-                                    text += "</div>";
-                                    text += "</div>";
-                                    text += "<div class='col-md-2'>";
-                                    text += "<div class='form-group'>";
-                                    text += "<div class='input-group' style='margin-top: 5px;'>";
-                                    text += "<button type='button' style='display: none' onclick='batalAnggota("+i+")' name='batal_anggota"+i+"' id='batal_anggota"+i+"' class='btn btn-danger btn-sm batal_anggota"+i+"'>Batal</button>";
+                                    text += "<div class='input-group'>";
+                                    text += "<button type='button' style='display: none' onclick='batalAnggota("+i+")' name='batal_anggota"+i+"' id='batal_anggota"+i+"' class='btn bg-gradient-danger batal_anggota"+i+"'>Batal</button>";
                                     text += "</div>";
                                     text += "</div>";
                                     text += "</div>";
@@ -1161,6 +1168,10 @@
         });
 
         function cekAnggota(i){
+
+            document.getElementById("camwni").value = 0;
+            document.getElementById("camwna").value = 0;
+
             var email_ketua = $("#email").val();
             var token_user  = $('#token_user').val();
             var gunung = $('#gunung').val();
@@ -2392,6 +2403,10 @@
 
 
         function batalAnggota(i){
+
+            document.getElementById("camwni").value = 0;
+            document.getElementById("camwna").value = 0;
+
             var cek_anggota = document.getElementById("cek_anggota"+i);
             cek_anggota.style.display = "block";
 
@@ -2982,16 +2997,16 @@
                             $.each(jsonArrayLog, function (key, value) {
                                 $('#log_user_verification').append("<li><strong>\Waktu: "+ value.waktu+"</strong>\
                                         <table class='table table-bordered' style='margin-top: 0.5rem;border: 0px solid #f0f8ff00;'>\
-										<tr>\
-										<td width='50'>Status:</td>\
-										<td>"+value.status_verified_account+"</td>\
-										</tr>\
+                                        <tr>\
+                                        <td width='50'>Status:</td>\
+                                        <td>"+value.status_verified_account+"</td>\
+                                        </tr>\
                                         <tr>\
                                             <td width='50'>Catatan:</td>\
                                             <td>"+value.catatan+"</td>\
                                         </tr>\
-										</table>\
-										</li>");
+                                        </table>\
+                                        </li>");
                             })
 
                         }
@@ -3262,6 +3277,7 @@
             var email_ketua = $("#email").val();
             var gunung = $('#gunung').val();
             var pos = $('#pos').val();
+            var umur_ketua = $("#umur_ketua").val();
             var kewarganegaraan = $('#ketua_is_wni').val();
             var total_anggota = $('#total_anggota').val();
             var start_date = $('#start_date').val();
@@ -3271,22 +3287,39 @@
 
             var email_anggotake1    = $("#save_email_anggotake1").val(),
                 kw_anggotake1       = $("#save_kw_anggotake1").val(),
+                umur_anggotake1     = $("#save_umur_anggotake1").val(),
+
                 email_anggotake2    = $("#save_email_anggotake2").val(),
                 kw_anggotake2       = $("#save_kw_anggotake2").val(),
+                umur_anggotake2     = $("#save_umur_anggotake2").val(),
+
                 email_anggotake3    = $("#save_email_anggotake3").val(),
                 kw_anggotake3       = $("#save_kw_anggotake3").val(),
+                umur_anggotake3     = $("#save_umur_anggotake3").val(),
+
                 email_anggotake4    = $("#save_email_anggotake4").val(),
                 kw_anggotake4       = $("#save_kw_anggotake4").val(),
+                umur_anggotake4     = $("#save_umur_anggotake4").val(),
+
                 email_anggotake5    = $("#save_email_anggotake5").val(),
                 kw_anggotake5       = $("#save_kw_anggotake5").val(),
+                umur_anggotake5     = $("#save_umur_anggotake5").val(),
+
                 email_anggotake6    = $("#save_email_anggotake6").val(),
                 kw_anggotake6       = $("#save_kw_anggotake6").val(),
+                umur_anggotake6     = $("#save_umur_anggotake6").val(),
+
                 email_anggotake7    = $("#save_email_anggotake7").val(),
                 kw_anggotake7       = $("#save_kw_anggotake7").val(),
+                umur_anggotake7     = $("#save_umur_anggotake7").val(),
+
                 email_anggotake8    = $("#save_email_anggotake8").val(),
                 kw_anggotake8       = $("#save_kw_anggotake8").val(),
+                umur_anggotake8     = $("#save_umur_anggotake8").val(),
+
                 email_anggotake9    = $("#save_email_anggotake9").val(),
-                kw_anggotake9       = $("#save_kw_anggotake9").val();
+                kw_anggotake9       = $("#save_kw_anggotake9").val(),
+                umur_anggotake9     = $("#save_umur_anggotake9").val();
             $.ajax({
                 type    : "POST",
                 url     : "core/cek_tiket_anggota.php",
@@ -3294,28 +3327,48 @@
                     gunung: gunung,
                     pos: pos,
                     email_ketua: email_ketua,
+                    umur_ketua: umur_ketua,
                     kewarganegaraan: kewarganegaraan,
                     start_date: start_date,
                     end_date: end_date,
                     total_anggota: total_anggota,
+
                     email_anggotake1: email_anggotake1,
                     kw_anggotake1: kw_anggotake1,
+                    umur_anggotake1:umur_anggotake1,
+
                     email_anggotake2: email_anggotake2,
                     kw_anggotake2: kw_anggotake2,
+                    umur_anggotake2:umur_anggotake2,
+
                     email_anggotake3: email_anggotake3,
                     kw_anggotake3: kw_anggotake3,
+                    umur_anggotake3:umur_anggotake3,
+
                     email_anggotake4: email_anggotake4,
                     kw_anggotake4: kw_anggotake4,
+                    umur_anggotake4:umur_anggotake4,
+
                     email_anggotake5: email_anggotake5,
                     kw_anggotake5: kw_anggotake5,
+                    umur_anggotake5:umur_anggotake5,
+
                     email_anggotake6: email_anggotake6,
                     kw_anggotake6: kw_anggotake6,
+                    umur_anggotake6:umur_anggotake6,
+
                     email_anggotake7: email_anggotake7,
                     kw_anggotake7: kw_anggotake7,
+                    umur_anggotake7:umur_anggotake7,
+
                     email_anggotake8: email_anggotake8,
                     kw_anggotake8: kw_anggotake8,
+                    umur_anggotake8:umur_anggotake8,
+
                     email_anggotake9: email_anggotake9,
                     kw_anggotake9: kw_anggotake9,
+                    umur_anggotake9:umur_anggotake9,
+
                     camwni: camwni,
                     camwna: camwna
                 },
@@ -3370,6 +3423,7 @@
             var email_ketua = $("#email").val();
             var gunung = $('#gunung').val();
             var pos = $('#pos').val();
+            var umur_ketua = $("#umur_ketua").val();
             var kewarganegaraan = $('#ketua_is_wni').val();
             var total_anggota = $('#total_anggota').val();
             var start_date = $('#start_date').val();
@@ -3379,22 +3433,39 @@
 
             var email_anggotake1    = $("#save_email_anggotake1").val(),
                 kw_anggotake1       = $("#save_kw_anggotake1").val(),
+                umur_anggotake1     = $("#save_umur_anggotake1").val(),
+
                 email_anggotake2    = $("#save_email_anggotake2").val(),
                 kw_anggotake2       = $("#save_kw_anggotake2").val(),
+                umur_anggotake2     = $("#save_umur_anggotake2").val(),
+
                 email_anggotake3    = $("#save_email_anggotake3").val(),
                 kw_anggotake3       = $("#save_kw_anggotake3").val(),
+                umur_anggotake3     = $("#save_umur_anggotake3").val(),
+
                 email_anggotake4    = $("#save_email_anggotake4").val(),
                 kw_anggotake4       = $("#save_kw_anggotake4").val(),
+                umur_anggotake4     = $("#save_umur_anggotake4").val(),
+
                 email_anggotake5    = $("#save_email_anggotake5").val(),
                 kw_anggotake5       = $("#save_kw_anggotake5").val(),
+                umur_anggotake5     = $("#save_umur_anggotake5").val(),
+
                 email_anggotake6    = $("#save_email_anggotake6").val(),
                 kw_anggotake6       = $("#save_kw_anggotake6").val(),
+                umur_anggotake6     = $("#save_umur_anggotake6").val(),
+
                 email_anggotake7    = $("#save_email_anggotake7").val(),
                 kw_anggotake7       = $("#save_kw_anggotake7").val(),
+                umur_anggotake7     = $("#save_umur_anggotake7").val(),
+
                 email_anggotake8    = $("#save_email_anggotake8").val(),
                 kw_anggotake8       = $("#save_kw_anggotake8").val(),
+                umur_anggotake8     = $("#save_umur_anggotake8").val(),
+
                 email_anggotake9    = $("#save_email_anggotake9").val(),
-                kw_anggotake9       = $("#save_kw_anggotake9").val();
+                kw_anggotake9       = $("#save_kw_anggotake9").val(),
+                umur_anggotake9     = $("#save_umur_anggotake9").val();
             $.ajax({
                 type    : "POST",
                 url     : "core/cek_tiket_anggota.php",
@@ -3402,28 +3473,48 @@
                     gunung: gunung,
                     pos: pos,
                     email_ketua: email_ketua,
+                    umur_ketua: umur_ketua,
                     kewarganegaraan: kewarganegaraan,
                     start_date: start_date,
                     end_date: end_date,
                     total_anggota: total_anggota,
+
                     email_anggotake1: email_anggotake1,
                     kw_anggotake1: kw_anggotake1,
+                    umur_anggotake1:umur_anggotake1,
+
                     email_anggotake2: email_anggotake2,
                     kw_anggotake2: kw_anggotake2,
+                    umur_anggotake2:umur_anggotake2,
+
                     email_anggotake3: email_anggotake3,
                     kw_anggotake3: kw_anggotake3,
+                    umur_anggotake3:umur_anggotake3,
+
                     email_anggotake4: email_anggotake4,
                     kw_anggotake4: kw_anggotake4,
+                    umur_anggotake4:umur_anggotake4,
+
                     email_anggotake5: email_anggotake5,
                     kw_anggotake5: kw_anggotake5,
+                    umur_anggotake5:umur_anggotake5,
+
                     email_anggotake6: email_anggotake6,
                     kw_anggotake6: kw_anggotake6,
+                    umur_anggotake6:umur_anggotake6,
+
                     email_anggotake7: email_anggotake7,
                     kw_anggotake7: kw_anggotake7,
+                    umur_anggotake7:umur_anggotake7,
+
                     email_anggotake8: email_anggotake8,
                     kw_anggotake8: kw_anggotake8,
+                    umur_anggotake8:umur_anggotake8,
+
                     email_anggotake9: email_anggotake9,
                     kw_anggotake9: kw_anggotake9,
+                    umur_anggotake9:umur_anggotake9,
+
                     camwni: camwni,
                     camwna: camwna
                 },

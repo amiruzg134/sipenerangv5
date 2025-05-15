@@ -4,6 +4,22 @@ function rupiah($nominal)
     return number_format($nominal, 0, ",", ".");
 }
 
+function logPayment($type, $data) {
+    $date = date('Y-m-d H:i:s');
+    $code = isset($data['code']) ? $data['code'] : 'unknown_invoice_'.date('Y-m-d');
+    $logFile = dirname(__DIR__) . '/logs/' . $code . '.log';
+    if (!file_exists(dirname($logFile))) {
+        mkdir(dirname($logFile), 0777, true);
+    }
+
+    $logEntry = [
+        'insert_time' => $date,
+        'type' => $type,
+        'data' => $data
+    ];
+
+    file_put_contents($logFile, json_encode($logEntry, JSON_UNESCAPED_UNICODE) . PHP_EOL, FILE_APPEND);
+}
 
 function encrypt_openssl($plaintext, $key)
 {

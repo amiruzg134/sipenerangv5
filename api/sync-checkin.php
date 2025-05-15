@@ -11,14 +11,27 @@ try{
     $admin_id       = $_GET['checkin_verification_admin_id'];
     $trx_id         = $_GET['trx_id'];
 
+    $trx  = mysqli_fetch_array(mysqli_query($conn, "SELECT pd_nomor FROM tb_pendakian WHERE trx_pendakian_id='$trx_id'"));
+    $responseDataTiketPendakian = [
+        "code"              => $trx['pd_nomor'],
+        "log"               => [
+            "checkin_at" => $checkin_at,
+            "gate_checkin" => $gate_checkin,
+            "checkin_verification_admin_id" => $admin_id,
+            "trx_id" => $trx_id,
+        ],
+    ];
+    logPayment('RESPONSE_CHECKIN', $responseDataTiketPendakian);
+
     $admin = mysqli_fetch_array(mysqli_query($conn, "SELECT user_id FROM user WHERE user_id_tiket_pendakian='$admin_id'"));
     $gate  = mysqli_fetch_array(mysqli_query($conn, "SELECT pp_id FROM tb_pos_pendakian WHERE mountain_gate_id='$gate_checkin'"));
 
     $user_admin_id  = $admin['user_id'];
     $gate_id        = $gate['pp_id'];
     mysqli_query($conn, "UPDATE tb_pendakian 
-                    SET pd_acc_naik_by='$user_admin_id', pd_pos_pendakian='$gate_id', 
+                    SET pd_acc_naik_by='$user_admin_id', pd_status='sudah naik', pd_pos_pendakian='$gate_id', 
                      pd_tgl_naik='$checkin_at' WHERE trx_pendakian_id= '$trx_id'");
+
 
     $respon = [
         "error"     => false,
@@ -37,5 +50,4 @@ try{
     echo json_encode($respon);
     exit();
 }
-
 

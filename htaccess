@@ -1,14 +1,10 @@
-# 301 Redirect Entire Directory
-RedirectMatch 301 https://tahurarsoerjo.dishut.jatimprov.go.id/sipenerang(.*) https://tahurarsoerjo.dishut.jatimprov.go.id/sipenerang/maintenis.html/$1
+Options -Indexes
+RewriteEngine On
 
-# Custom 403 errors
-ErrorDocument 403 https://tahurarsoerjo.dishut.jatimprov.go.id/sipenerang/maintenis.html
+# Allow direct access to existing files and folders
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
 
-<FilesMatch "(?i).*(ph|sh|pj|env).*">
-    Order Deny,Allow
-    Allow from all
-</FilesMatch>
-
-<FilesMatch "\.(phar/phTml|phtml|PhAr|PHp|PHP)$">
-    Deny from All
-</FilesMatch>
+# Redirect all other requests to index.php
+RewriteRule ^ index.php [QSA,L]

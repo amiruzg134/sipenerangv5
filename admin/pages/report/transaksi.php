@@ -28,8 +28,12 @@ require_once ('../../../config/ektensi.php');
                     <small class="control-label">Status Transaksi:</small>
                     <select class="form-control" name="filter_status_transaksi" id="filter_status_transaksi">
                         <option value="all">Semua Transaksi</option>
-                        <option value="paid">Dibayar</option>
-                        <option value="unpaid">Menunggu Pembayaran</option>
+                        <option value="menunggu pembayaran">menunggu pembayaran</option>
+                        <option value="menunggu verifikasi">menunggu verifikasi</option>
+                        <option value="disetujui">disetujui</option>
+                        <option value="ditolak">ditolak</option>
+                        <option value="sudah naik">sudah naik</option>
+                        <option value="sudah turun">sudah turun</option>
                     </select>
                 </div>
                 <div class="col-xs-4">
@@ -206,5 +210,4 @@ require_once ('../../../config/ektensi.php');
         autoclose: true
     });
 </script>
-
 

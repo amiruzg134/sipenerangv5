@@ -124,21 +124,24 @@ $email = $res['data']['email'];
                 </div>
 
                 <div class="form-group">
-                    <label for="id_card_type">Tipe kartu identitas</label>
-                    <select class="form-control" name="id_card_type" id="id_card_type">
-                        <option value="" selected>Pilih Tipe Kartu Identitas</option>
-                        <option value="ktp">KTP</option>
-                        <option value="passport">Passport</option>
-                        <option value="sim">SIM</option>
-                        <option value="kartu pelajar">Kartu Pelajar</option>
-                        <option value="kitas">Kitas</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="id_card_number">No. Identitas</label>
-                    <input type="text" class="form-control" id="id_card_number" placeholder="KTP, SIM, Kartu Pelajar, Passport" name="id_card_number" required>
-                    <span id="error" class="text-danger text-sm"></span>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="id_card_type">Tipe kartu identitas</label>
+                            <select class="form-control" name="id_card_type" id="id_card_type">
+                                <option value="" selected>Pilih Tipe Kartu Identitas</option>
+                                <option value="ktp">KTP</option>
+                                <option value="passport">Passport</option>
+                                <option value="sim">SIM</option>
+                                <option value="kartu pelajar">Kartu Pelajar</option>
+                                <option value="kitas">Kitas</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="id_card_number">No. Identitas</label>
+                            <input type="text" class="form-control" id="id_card_number" placeholder="KTP, SIM, Kartu Pelajar, Passport" name="id_card_number" required>
+                            <span id="error" class="text-danger text-sm"></span>
+                        </div>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="name">Upload kartu Identitas</label>
@@ -156,7 +159,7 @@ $email = $res['data']['email'];
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="phone_code_id">No. Telfon</label>
+                    <label for="phone_code_id">No. Telepon</label>
                     <div class="form-group">
                         <div class="input-group">
                             <div class="input-group-prepend">
@@ -171,14 +174,14 @@ $email = $res['data']['email'];
                 <div class="form-group">
                     <div class="row">
                         <div class="col-md-6">
-                            <label class="form-label mt-4">Tempat Lahir</label>
+                            <label class="form-label">Tempat Lahir</label>
                             <div class="input-group">
                                 <input class="form-control" type="text" name="place_birth" id="place_birth" placeholder="Masukan tempat lahir Anda" required>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group" style="margin-bottom: 0">
-                                <label class="form-label mt-4">Tanggal Lahir</label>
+                                <label class="form-label">Tanggal Lahir</label>
                                 <div class="input-group" >
                                     <span class="input-group-text"><i class="ni ni-calendar-grid-58"></i></span>
                                     <input class="form-control datetimepicker" type="text" name="date_birth" id="date_birth" placeholder="Masukan tanggal lahir Anda" required>
@@ -215,14 +218,9 @@ $email = $res['data']['email'];
                         <option value="">- Pilih -</option>
                     </select>
                 </div>
-                <div class="form-group">
-
-                </div>
-
-                <!--  -->
 
             <div class="d-grid gap-2">
-                <button type="button" id="nextBtn" class="btn btn-grad">
+                <button type="button" id="nextBtn" class="btn btn-grad mt-4">
                     Selanjutnya
                 </button>
             </div>
@@ -236,12 +234,12 @@ $email = $res['data']['email'];
                             <div class="mb-4">
                                 <label class="form-label mt-4">Nama Kontak Darurat </label>
                                 <div class="input-group">
-                                    <input class="form-control selector" type="text" name="emergency_name_one" id="emergency_name_one" placeholder="Masukan nama kontak darurat Anda" minlength="6" pattern="[a-zA-Z'\s]+" required>
+                                    <input class="form-control selector" type="text" name="emergency_name_one" id="emergency_name_one" placeholder="Masukan nama kontak darurat" minlength="6" pattern="[a-zA-Z'\s]+" required>
                                 </div>
                             </div>
                             <div class="d-flex gap-4">
                                 <div class="w-50">
-                                    <label for="phone_code_id">No. Telfon</label>
+                                    <label for="phone_code_id">No. Telepon</label>
                                     <div class="form-group">
                                         <div class="input-group">
                                             <div class="input-group-prepend">
@@ -249,7 +247,7 @@ $email = $res['data']['email'];
                                                     <option selected value="62">+62</option>
                                                 </select>
                                             </div>
-                                            <input type="text" class="form-control" placeholder="Nomor Telp" id="emergency_phone_one" name="emergency_phone_one" required>
+                                            <input type="text" class="form-control" placeholder="Nomor Telepon" id="emergency_phone_one" name="emergency_phone_one" required>
                                         </div>
                                     </div>
                                 </div>
@@ -274,10 +272,15 @@ $email = $res['data']['email'];
                             <button class="btn btn-info" type="button" id="add-input" style="margin-top: 10px; text-transform:none;">Tambah Riwayat Penyakit</button>
                         </div>
                     </div>
+                    
+                    <div class="card mt-4">
+                        <div class="card-body pb-3">
+                            <span class="text-primary text-center">Pastikan untuk mengisi data dengan benar. Data yang sudah disimpan tidak dapat diubah.</span>
+                        </div>
+                    </div>
 
                 </div>
             </div>
-            <small style="color: red;">Isi data anda dengan benar karena data yang sudah anda masukan tidak dapat di edit kecuali admin menolak mengajuan akun verifikasi anda terlebih dahulu</small>
             <div class="d-flex flex-row gap-2 mt-4">
                 <button type="button" id="prevBtn" class="btn btn-secondary w-50">Kembali</button>
                 <button type="button" class="btn btn-grad w-50" id="proses">

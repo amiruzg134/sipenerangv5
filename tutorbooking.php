@@ -97,10 +97,13 @@
 	            <ol >
 	            	<li><h5>BOOKING ONLINE</h5>
 	            		<ol type="a" class="li">
-	            			<li>Buka halaman resmi Booking Online Pendakian Gunung Arjuno Welirang dan Pundak di https://tahurarsoerjo.dishut.jatimprov.go.id/sipenerang.</li>
-	            			<li>Klik "BOOKING".</li>
-	            			<li>Baca dan setujui persyaratan pendakian serta bersedia mentaati peraturan yang ada pada Tahura Raden Soerjo dengan centang kotak checklist yang berada di ujung bawah halaman kemudian klik "SETUJU"</li>
-	            			<li>Pilih tujuan pendakian, jumlah pendaki WNI, jumlah pendaki WNA, tanggal naik dan tanggal turun. Kemudian klik "CEK KUOTA".</li>
+	            			<li>Pastikan untuk mengakses halaman resmi Booking Pendakian Gunung Arjuno Welirang, Bukit Lincing, Bukit Cendono dan Gunung Pundak di https://tahurarsoerjo.dishut.jatimprov.go.id/sipenerang.</li>
+	            			<li>Silahkan login terlebih dahulu. Jika belum memiliki akun maka pendaki diharuskan melakukan pendaftaran.</li>
+	            			<li>Setelah melakukan pendaftaran, maka pastikan anda mengisi data personal pendaki yang selanjutnya akan diverifikasi oleh admin.</li>
+	            			<li>Setelah data diverifikasi oleh admin maka pendaki dapat melakukan booking.</li>
+	            			<li>Langkah selanjutnya klik tombol "BOOKING" di halaman beranda.</li>
+	            			<li>Baca dan pahami ketentuan pelaksanaan pendakian yang berlaku di kawasan Tahura Raden Soerjo. Centang dan klik "SETUJU" untuk ke tahap selanjutnya.</li>
+	            			<li>Selanjutnya pilih tujuan pendakian, jalur pendakian, jumlah pendaki, tanggal naik dan turun. Kemudian klik "CEK KUOTA".</li>
 	            			<li>Website akan menampilkan nominal biaya yang perlu dibayarkan. Jika sudah sesuai,  klik "ISI FORM".</li>
 	            			<li>Isi form booking. Pastikan data yang diisi sesuai. Jika form sudah diisi semua, kemudian klik "BOOKING"</li>
 	            			<li>Isi survey kepuasan.</li>
@@ -158,10 +161,7 @@
         <div class="col-12">
           <div class="text-center">
             <p class="text-dark my-4 text-sm font-weight-normal">
-              All rights reserved. Copyright ©
-              <script>
-                document.write(new Date().getFullYear())
-              </script>
+              All rights reserved. © 2019
               <a href="https://tahurarsoerjo.dishut.jatimprov.go.id" target="_blank">UPT Tahura Raden Soerjo.</a>
             </p>
           </div>
