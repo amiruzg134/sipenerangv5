@@ -301,13 +301,11 @@ $token_user = $_SESSION['token'];
               </div>
             </div>
             <div class="p-3">
-              <h6 class="heading mt-4">Tidak dapat melakukan pembayaran melalui metode : </h6>
+              <h6 class="heading mt-4">Tidak dapat melakukan pembayaran menggunakan : </h6>
               <ol class="mb-0">
-                <li>BI-FAST</li>
-                <li>LLG</li>
+                <li>Metode transfer BI-FAST, LLG, SKN</li>
                 <li>ATM BRI / BRImo / BRIlink</li>
                 <li>Dana</li>
-                <li>Gopay</li>
                 <li>Fastpay</li>
               </ol>
             </div>
@@ -572,7 +570,28 @@ $token_user = $_SESSION['token'];
 <script async defer src="https://buttons.github.io/buttons.js"></script>
 <script src="./assets/js/material-kit-pro.min.js?v=3.0.2" type="text/javascript"></script>
 <script src="assets/js/plugins/flatpickr.min.js"></script>
+<script src="./assets/js/plugins/sweetalert2.all.min.js"></script>
 <script type="text/javascript">
+    $(document).on('click', '#bayar', function () {
+        var nomor = $('#nomor').val();
+        $.ajax({
+            url: "upbuktibayar.php",
+            type: "POST",
+            data: { nomor : nomor},
+            success: function(response){
+                if(response == 1){
+                    Swal.fire({
+                        allowOutsideClick: false,
+                        allowEscapeKey: false,
+                        icon : 'success',
+                        title : 'Berhasil!',
+                        text : 'Verifikasi pembayaran maksimal 1x24 jam',
+                        confirmButtonText: '<a href="statusbooking.php?inv=<?php echo $_GET['inv'] ?>" style="color:white"> OK </a>'
+                    })
+                }
+            }
+        });
+    });
 </script>
 </body>
 

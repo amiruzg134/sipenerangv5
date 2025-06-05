@@ -582,14 +582,18 @@
                         <h5>Admin</h5>
                         <div class="d-flex ps-0">
                           <i class="material-icons text-sm">call</i>
-                          <span class="ps-3">Amiruzzuhhad Gunes - 085156579564 (<span style="color:red">chat only</span>) </span>
+                          <span class="ps-3">Admin - 085156579564 (<span style="color:red">text</span>) </span>
+                        </div>
+                        <div class="d-flex ps-0">
+                          <i class="material-icons text-sm">call</i>
+                          <span class="ps-3">Junaedi - 081554432204 (<span style="color:red">text</span>) </span>
                         </div>
                       </div>
                       <div class="col-md-6">
-                        <h5 class="mt-3">Pos Tretes</h5>
+                        <h5 class="mt-4">Pos Tretes</h5>
                         <div class="d-flex ps-0">
                           <i class="material-icons text-sm">call</i>
-                          <span class="ps-3">Rudiono - 081330787722</span>
+                          <span class="ps-3">Sigit Subagio - 082374521758</span>
                         </div>
                         <div class="d-flex ps-0">
                           <i class="material-icons text-sm">call</i>
@@ -597,64 +601,40 @@
                         </div>
                         <div class="d-flex ps-0">
                           <i class="material-icons text-sm">call</i>
-                          <span class="ps-3">Kasiyanto - 081336889910</span>
+                          <span class="ps-3">M. Syaiful - 082143492481</span>
                         </div>
                         <div class="d-flex ps-0">
                           <i class="material-icons text-sm">call</i>
-                          <span class="ps-3">Wahyu Rama Dhoni - 08973854949</span>
+                          <span class="ps-3">Abdul Solehuddin - 085695955772</span>
                         </div>
                         <h5 class="mt-4">Pos Sumberbrantas</h5>
                         <div class="d-flex ps-0">
                           <i class="material-icons text-sm">call</i>
-                          <span class="ps-3">Eko Budiono - 082234604229</span>
+                          <span class="ps-3">Zidane - 081326493705</span>
                         </div>
                         <div class="d-flex ps-0">
                           <i class="material-icons text-sm">call</i>
-                          <span class="ps-3">Dadang Suhendro - 082257496114</span>
-                        </div>
-                        <div class="d-flex ps-0">
-                          <i class="material-icons text-sm">call</i>
-                          <span class="ps-3">Sudarmanto - 085336983164</span>
-                        </div>
-                        <div class="d-flex ps-0">
-                          <i class="material-icons text-sm">call</i>
-                          <span class="ps-3">Rudi Siswanto - 081358832678</span>
+                          <span class="ps-3">Bagaskara - 085328754583</span>
                         </div>
                       </div>
                       <div class="col-md-6">
                         <h5 class="mt-4">Pos Tambaksari</h5>
                         <div class="d-flex ps-0">
                           <i class="material-icons text-sm">call</i>
-                          <span class="ps-3">Nur Yusuf - 082245814672</span>
+                          <span class="ps-3">Emir Hasan - 082133820436</span>
                         </div>
                         <div class="d-flex ps-0">
                           <i class="material-icons text-sm">call</i>
-                          <span class="ps-3">Talis - 085606589978</span>
+                          <span class="ps-3">Agus Setiawan - 082283492803</span>
+                        </div>
+                        <h5 class="mt-4">Pos Lawang/Bukit Lincing</h5>
+                        <div class="d-flex ps-0">
+                          <i class="material-icons text-sm">call</i>
+                          <span class="ps-3">Rafi Mardillah - 085363379593</span>
                         </div>
                         <div class="d-flex ps-0">
                           <i class="material-icons text-sm">call</i>
-                          <span class="ps-3">Eko Nur Hasan - 085895660666</span>
-                        </div>
-                        <div class="d-flex ps-0">
-                          <i class="material-icons text-sm">call</i>
-                          <span class="ps-3">Karyadi - 081331330207</span>
-                        </div>
-                        <h5 class="mt-4">Pos Lawang</h5>
-                        <div class="d-flex ps-0">
-                          <i class="material-icons text-sm">call</i>
-                          <span class="ps-3">Muhamad Junaedi - 081554432204</span>
-                        </div>
-                        <div class="d-flex ps-0">
-                          <i class="material-icons text-sm">call</i>
-                          <span class="ps-3">Khairul Anam - 082231518172</span>
-                        </div>
-                        <div class="d-flex ps-0">
-                          <i class="material-icons text-sm">call</i>
-                          <span class="ps-3">Arif Yuwono - 081331834646</span>
-                        </div>
-                        <div class="d-flex ps-0">
-                          <i class="material-icons text-sm">call</i>
-                          <span class="ps-3">Roni Sulianto - 082244447790</span>
+                          <span class="ps-3">Khoirul Anam - 082231518172</span>
                         </div>
                       </div>
                       <div class="col-md-6">

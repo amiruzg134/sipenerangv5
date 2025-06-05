@@ -342,14 +342,11 @@
           <div class="modal-content bg-gradient-danger">
             <div class="modal-body">
               <div class="py-3 text-white">
-                <h4 class="heading mt-4 text-white">Tidak bisa melakukan pembayaran melalui : </h4>
-                <ol>
-                  <li>BI-FAST</li>
-                  <li>LLG</li>
+                <h6 class="heading mt-4">Tidak dapat melakukan pembayaran menggunakan : </h6>
+                <ol class="mb-0">
+                  <li>Metode transfer BI-FAST, LLG, SKN</li>
                   <li>ATM BRI / BRImo / BRIlink</li>
                   <li>Dana</li>
-                  <li>Gopay</li>
-                  <li>OVO</li>
                   <li>Fastpay</li>
                 </ol>
               </div>
