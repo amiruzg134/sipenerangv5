@@ -1,0 +1,2 @@
+[31-Oct-2025 05:04:06 Asia/Jakarta] PHP Notice:  Undefined index: username in /home/tahurar5/sipenerang.tahurarsoerjo.com/admin/core/authenticate.php on line 8
+[31-Oct-2025 05:04:06 Asia/Jakarta] PHP Notice:  Undefined index: password in /home/tahurar5/sipenerang.tahurarsoerjo.com/admin/core/authenticate.php on line 9
