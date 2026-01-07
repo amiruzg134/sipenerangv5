@@ -1,0 +1,13 @@
+vendor/*
+server-side/node_modules
+server-side/public/build
+server-side/public/hot
+server-side/public/storage
+server-side/storage/*.key
+server-side/vendor
+server-side/storage
+<<<<<<< HEAD
+log/*
+=======
+>>>>>>> f42caff212e94c703590c9fef082a3d03e9aa83b
+.env
