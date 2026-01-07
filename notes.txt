@@ -1,0 +1,28 @@
+- berkas denda
+- config
+- simpan
+
+- konfirmasi
+- pendaki
+
+DATABASE :
++ alasan
+- tgl_naik
+- tgl_turun
+
+JULI
+- alert ketika pilih pos lawang
+- mengembalikan form pundak ke semula
+- fixed tidak dapat menyimpan tanda petik
+- form tidak dapat menyimpan data yg sama
+- Redirect ketika selesai booking
+- Hapus upload bukti bayar jadi tombol bayar
+- pilihan pos naik otomatis sesuai booking
+- added database tgl naik turun
+
+FILE
+- BOOKING
+- SIMPAN
+- PENDAKI
+- BERKAS PUNDAK
+- EMAIL TAGIHAN
