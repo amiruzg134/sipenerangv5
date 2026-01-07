@@ -1,4 +1,0 @@
-[17-Sep-2025 15:58:22 Asia/Jakarta] PHP Notice:  Undefined index: gunung_select in /home/tahurar5/sipenerang.tahurarsoerjo.com/admin/pages/master/action-kuota/action.php on line 57
-[17-Sep-2025 15:58:22 Asia/Jakarta] PHP Notice:  Undefined index: pos_select in /home/tahurar5/sipenerang.tahurarsoerjo.com/admin/pages/master/action-kuota/action.php on line 58
-[17-Sep-2025 15:58:22 Asia/Jakarta] PHP Notice:  Undefined index: tahun_select in /home/tahurar5/sipenerang.tahurarsoerjo.com/admin/pages/master/action-kuota/action.php on line 59
-[17-Sep-2025 15:58:22 Asia/Jakarta] PHP Notice:  Undefined index: bulan_select in /home/tahurar5/sipenerang.tahurarsoerjo.com/admin/pages/master/action-kuota/action.php on line 60
