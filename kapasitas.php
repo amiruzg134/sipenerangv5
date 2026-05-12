@@ -1,9 +1,12 @@
 <?php 
   session_start();
+  if (!isset($_SESSION['loggedin'])) {
+    header('Location: index.php');
+    exit;
+  }
   include 'config/connection.php';
   include 'config.php';
   $token_user = $_SESSION['token'];
-
 ?>
 
 <!DOCTYPE html>
@@ -21,7 +24,6 @@
   <meta name="description" content="Booking Pendakian Gunung Arjuno Welirang dan Pundak">
 
   <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900|Roboto+Slab:400,700" />
-
   <link href="./assets/css/nucleo-icons.css" rel="stylesheet" />
   <link href="./assets/css/nucleo-svg.css" rel="stylesheet" />
   <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
@@ -103,41 +105,41 @@
 
 <body class="presentation-page bg-gray-200">
 
-	<div class="container position-sticky top-0" style="z-index: 3; background: white;">
-		<div class="row">
-		  <div class="col-12">
-		    <nav class="navbar navbar-expand-lg blur border-radius-xl top-0 shadow position-absolute my-3 py-2 start-0 end-0 mx-4">
-		      <div class="container-fluid px-0">
-		        <a class="navbar-brand font-weight-bolder ms-sm-3 d-none d-md-block" href="index.php" rel="tooltip" data-placement="bottom"> 
-		          Tahura Raden Soerjo
-		        </a>
-		        <a class="navbar-brand font-weight-bolder ms-sm-3 d-block d-md-none" href="index.php" rel="tooltip" data-placement="bottom">
-		          Tahura Raden Soerjo
-		        </a>
-		        <button class="navbar-toggler shadow-none ms-md-2" type="button" data-bs-toggle="collapse" data-bs-target="#navigation" aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation" >
-		          <span class="navbar-toggler-icon mt-2">
-		            <span class="navbar-toggler-bar bar1"></span>
-		            <span class="navbar-toggler-bar bar2"></span>
-		            <span class="navbar-toggler-bar bar3"></span>
-		          </span>
-		        </button>
-		        <div class="collapse navbar-collapse w-100 pt-3 pb-2 py-lg-0" id="navigation">
-		          <ul class="navbar-nav navbar-nav-hover ms-auto">
-		          	<li class="nav-item dropdown dropdown-hover mx-2">
+    <div class="container position-sticky top-0" style="z-index: 3; background: white;">
+        <div class="row">
+          <div class="col-12">
+            <nav class="navbar navbar-expand-lg blur border-radius-xl top-0 shadow position-absolute my-3 py-2 start-0 end-0 mx-4">
+              <div class="container-fluid px-0">
+                <a class="navbar-brand font-weight-bolder ms-sm-3 d-none d-md-block" href="index.php" rel="tooltip" data-placement="bottom"> 
+                  Tahura Raden Soerjo
+                </a>
+                <a class="navbar-brand font-weight-bolder ms-sm-3 d-block d-md-none" href="index.php" rel="tooltip" data-placement="bottom">
+                  Tahura Raden Soerjo
+                </a>
+                <button class="navbar-toggler shadow-none ms-md-2" type="button" data-bs-toggle="collapse" data-bs-target="#navigation" aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation" >
+                  <span class="navbar-toggler-icon mt-2">
+                    <span class="navbar-toggler-bar bar1"></span>
+                    <span class="navbar-toggler-bar bar2"></span>
+                    <span class="navbar-toggler-bar bar3"></span>
+                  </span>
+                </button>
+                <div class="collapse navbar-collapse w-100 pt-3 pb-2 py-lg-0" id="navigation">
+                  <ul class="navbar-nav navbar-nav-hover ms-auto">
+                    <li class="nav-item dropdown dropdown-hover mx-2">
                   <a class="nav-link ps-2 d-flex cursor-pointer align-items-center" href="index.php">
                     Beranda
                   </a>
                 </li>
-		            <li class="nav-item dropdown dropdown-hover mx-2">
-		              <a class="nav-link ps-2 d-flex cursor-pointer align-items-center" href="tutorbooking.php">
-		                Panduan Booking
-		              </a>
-		            </li>
-		            <li class="nav-item dropdown dropdown-hover mx-2">
-		              <a class="nav-link ps-2 d-flex cursor-pointer align-items-center" href="tutorpembayaran.php">
-		                Panduan Pembayaran
-		              </a>
-		            </li>
+                    <li class="nav-item dropdown dropdown-hover mx-2">
+                      <a class="nav-link ps-2 d-flex cursor-pointer align-items-center" href="tutorbooking.php">
+                        Panduan Booking
+                      </a>
+                    </li>
+                    <li class="nav-item dropdown dropdown-hover mx-2">
+                      <a class="nav-link ps-2 d-flex cursor-pointer align-items-center" href="tutorpembayaran.php">
+                        Panduan Pembayaran
+                      </a>
+                    </li>
                       <?php
                       if (isset($_SESSION['uuid'])) { ?>
                           <li class="nav-item dropdown dropdown-hover mx-2">
@@ -156,26 +158,26 @@
                           </li>
                           </form>
                       <?php } ?>
-		          </ul>
-		        </div>
-		      </div>
-		    </nav>
-		  </div>
-		</div>
-	</div>
+                  </ul>
+                </div>
+              </div>
+            </nav>
+          </div>
+        </div>
+    </div>
 
-	<header>
-		<div class="page-header min-vh-50" style="background-image: url('assets/img/pundak.jpg');">
-			<span class="mask bg-gradient-dark opacity-4"></span>
-			<div class="container">
-				<div class="row">
-					<div class="col-lg-8 mx-auto text-white text-center">
-						<h2 class="text-white">Pilih Tujuan dan Tanggal</h2>
-					</div>
-				</div>
-			</div>
-		</div>
-	</header>
+    <header>
+        <div class="page-header min-vh-50" style="background-image: url('assets/img/pundak.jpg');">
+            <span class="mask bg-gradient-dark opacity-4"></span>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 mx-auto text-white text-center">
+                        <h2 class="text-white">Pilih Tujuan dan Tanggal</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
 
     <div class="card card-body blur shadow-blur mx-3 mx-md-4 mt-n6" id="div_informasi" style="display: none;">
         <div class="container">
@@ -188,12 +190,12 @@
         </div>
     </div>
 
-	<form autocomplete="off" method="post" action="">
-		<div class="card card-body blur shadow-blur mx-3 mx-md-4 mt-n6" id="div_pemesanan" style="display: none;">
-		  <div class="container mt-4">
-		    <div class="row border-radius-md pb-4 mx-sm-0 mx-1 position-relative">
-		    	<div class="col-lg-10">
-		    		<div class="row">
+    <form autocomplete="off" method="post" action="">
+        <div class="card card-body blur shadow-blur mx-3 mx-md-4 mt-n6" id="div_pemesanan" style="display: none;">
+          <div class="container mt-4">
+            <div class="row border-radius-md pb-4 mx-sm-0 mx-1 position-relative">
+                <div class="col-lg-10">
+                    <div class="row">
                         <input type="hidden" id="max_date" name="max_date">
                         <div class="col-lg-4 mt-lg-n2 mt-2">
                             <label for="gunung">Gunung</label>
@@ -216,35 +218,35 @@
                             </div>
                         </div>
 
-				      <div class="col-lg-2 mt-lg-n2 mt-2">
-				        <label class="ms-0">Tanggal Naik</label>
-				        <div class="input-group input-group-static">
-							<span class="input-group-text"><i class="fas fa-calendar"></i></span>
-					        <input name="start_date" class="form-control readonly" id="start_date" type="text" data-input required value="" placeholder="-- pilih --">
-						</div>
-				      </div>
-				      <div class="col-lg-2 mt-lg-n2 mt-2">
-				        <label class="ms-0">Tanggal Turun</label>
-				        <div class="input-group input-group-static">
-									<span class="input-group-text"><i class="fas fa-calendar"></i></span>
-				        	<input name="end_date" class="form-control readonly" id="end_date" type="text" data-input required placeholder="-- pilih --">
-								</div>
-				      </div>
-			    	</div>
+                      <div class="col-lg-2 mt-lg-n2 mt-2">
+                        <label class="ms-0">Tanggal Naik</label>
+                        <div class="input-group input-group-static">
+                            <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                            <input name="start_date" class="form-control readonly" id="start_date" type="text" data-input required value="" placeholder="-- pilih --">
+                        </div>
+                      </div>
+                      <div class="col-lg-2 mt-lg-n2 mt-2">
+                        <label class="ms-0">Tanggal Turun</label>
+                        <div class="input-group input-group-static">
+                                    <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                            <input name="end_date" class="form-control readonly" id="end_date" type="text" data-input required placeholder="-- pilih --">
+                                </div>
+                      </div>
+                    </div>
                     <p class="mt-2">
                         <span id="informasi_tanggal" style="display: none;" class="text-primary"></span>
                         <span id="informasi_status_akun" style="display: none;" class="text-info"></span>
                     </p>
-		    	</div>
-		    	<div class="col-lg-2">
-			      <div class="col-lg-12 mt-4">
-			        <button type="submit" class="btn bg-gradient-primary mb-0 w-100" name="cek_kuota" id="cek_kuota">cek kuota</button>
-			      </div>
-		    	</div>
-		    </div>
-		  </div>
-		</div>
-	</form>
+                </div>
+                <div class="col-lg-2">
+                  <div class="col-lg-12 mt-4">
+                    <button type="submit" class="btn bg-gradient-primary mb-0 w-100" name="cek_kuota" id="cek_kuota">cek kuota</button>
+                  </div>
+                </div>
+            </div>
+          </div>
+        </div>
+    </form>
 
     <div class="card card-body blur shadow-blur mx-3 mx-md-4 mt-4" id="status_user_verified" style="display: none;">
         <div class="container mt-4">
@@ -377,7 +379,6 @@
             </div>
         </section>
 
-
         <section id="respon_anggota" style="display: none;">
             <div class="col-lg-9 col-12 mt-4 mx-auto">
                 <div class="container">
@@ -399,7 +400,6 @@
             </div>
         </section>
 
-
         <section id="detail_kamera" style="display: none;">
             <div class="col-lg-9 col-12 mt-4 mx-auto">
                 <div class="container">
@@ -410,7 +410,8 @@
                                     <h6 class="mb-0">Penggunaan Kamera</h6>
                                 </div>
                                 <span>
-                                    <span class="text-primary text-sm">Masukkan jumlah kamera yang anda bawa.</span>
+                                    <!--<span class="text-primary text-sm">Masukkan jumlah kamera yang anda bawa.</span>-->
+                                    <span class="text-primary text-sm">Pembayaran retribusi kamera saat ini masih belum tersedia. Silahkan melakukan perizina di pos perizinan.</span>
                                 </span>
                             </div>
                         </div>
@@ -419,13 +420,13 @@
                                 <div class="col-md-6">
                                     <label class="ms-0">Kamera Pendaki WNI</label>
                                     <div class="input-group input-group-static">
-                                        <input name="camwni" id="camwni" class="form-control" type="number" min="0" value="0" required placeholder="0">
+                                        <input name="camwni" id="camwni" class="form-control" type="number" min="0" value="0" required placeholder="0" disabled>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="ms-0">Kamera Pendaki WNA</label>
                                     <div class="input-group input-group-static">
-                                        <input name="camwna" id="camwna" class="form-control" type="number" min="0" value="0" required placeholder="0">
+                                        <input name="camwna" id="camwna" class="form-control" type="number" min="0" value="0" required placeholder="0" disabled>
                                     </div>
                                 </div>
                             </div>
@@ -434,7 +435,6 @@
                 </div>
             </div>
         </section>
-
 
         <section id="respon_summary" style="display: none;">
             <div class="col-lg-9 col-12 mt-4 mx-auto">
@@ -466,7 +466,6 @@
                 </div>
             </div>
         </section>
-
 
         <section id="div_metode_pembayaran" style="display: none;">
             <div class="col-lg-9 col-12 mt-4 mx-auto">
@@ -592,7 +591,6 @@
         </div>
     </div>
 
-
     <!-- Modal -->
     <div class="modal" id="verifikasiakunFE" style="display: none;">
         <div class="modal-dialog">
@@ -634,6 +632,7 @@
     <input type="hidden" id="data_anggota7" name="data_anggota7">
     <input type="hidden" id="data_anggota8" name="data_anggota8">
     <input type="hidden" id="data_anggota9" name="data_anggota9">
+
 
     <input type="hidden" id="save_total_anggota" name="save_total_anggota">
 
@@ -677,21 +676,24 @@
     <input type="hidden" id="save_email_anggotake10" name="save_email_anggotake10">
     <input type="hidden" id="save_umur_anggotake10" name="save_umur_anggotake10">
 
-    <!-- FOOTER -->
-    <footer class="footer pt-5 mt-5">
-        <div class="container">
-          <div class="row">
-            <div class="col-12">
-              <div class="text-center">
-                <p class="text-dark my-4 text-sm font-weight-normal">
-                  All rights reserved. © 2019
-                  <a href="https://tahurarsoerjo.dishut.jatimprov.go.id" target="_blank">UPT Tahura Raden Soerjo.</a>
-                </p>
-              </div>
-            </div>
+  <!-- FOOTER -->
+  <footer class="footer pt-5 mt-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <div class="text-center">
+            <p class="text-dark my-4 text-sm font-weight-normal">
+              All rights reserved. Copyright ©
+              <script>
+                document.write(new Date().getFullYear())
+              </script>
+              <a href="https://tahurarsoerjo.dishut.jatimprov.go.id" target="_blank">UPT Tahura Raden Soerjo.</a>
+            </p>
           </div>
         </div>
-    </footer>
+      </div>
+    </div>
+  </footer>
 
     <script src="./assets/js/core/popper.min.js" type="text/javascript"></script>
     <script src="./assets/js/core/jquery-min.js" type="text/javascript"></script>
@@ -706,6 +708,7 @@
     <script src="./assets/js/plugins/nouislider.min.js" type="text/javascript"></script>
     <script src="./assets/js/plugins/anime.min.js" type="text/javascript"></script>
     <script src="./assets/js/material-kit-pro.min.js?v=3.0.2" type="text/javascript"></script>
+<!--    <script src="assets/js/plugins/flatpickr.min.js"></script>-->
 
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
@@ -714,7 +717,7 @@
     <!-- jQuery UI JavaScript -->
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
 
-    <script type="text/javascript">
+        <script type="text/javascript">
         $(function () {
             $.datepicker.regional['id'] = {
                 closeText: 'Tutup',
@@ -738,7 +741,15 @@
             $.datepicker.setDefaults($.datepicker.regional['id']);
         });
 
+        var baseTotalTicket = 0;
 
+        function formatRupiah(angka) {
+            return "Rp " + angka.toLocaleString('id-ID');
+        }
+
+        function cleanPrice(priceString) {
+            return parseInt(priceString.toString().replace(/[^0-9]/g, '')) || 0;
+        }
 
         $(document).ready(function() {
 
@@ -864,7 +875,7 @@
             var is_enable_button_pengajuan = $('#is_enable_button_pengajuan').val();
             var status_pengajuan = $('#verified_user_status').val();
             if (!is_enable_button_pengajuan){
-                alert("Maaf anda tidak dapat melakukan pengajuan, karena status akun anda saat ini adalah : "+status_pengajuan+", Jika akun anda belum pernah ditolak saat verifikasi akun atau belum pernah melakukan mengajukan terverifikasi dan tidak dapat melakukan mengajukan verifikasi silakan download dan install aplikasi tiket pendakian untuk melakukan pengajuan verifikasi akun anda.")
+                alert("Maaf anda tidak dapat melakukan pengajuan, karena status akun anda saat ini adalah : "+status_pengajuan+", Jika akun anda belum pernah ditolak saay verifikasi akun atau belum pernah melakukan mengajukan terverifikasi dan tidak dapat melakukan mengajukan verifikasi silakan download dan install aplikasi tiket pendakian untuk melakukan pengajuan verifikasi akun anda.")
             }else{
                 window.location.href = url_path;
             }
@@ -1023,13 +1034,16 @@
                     $('#checkout').prop('disabled', false)
                 },
                 success: function (response) {
-                    var json = $.parseJSON(response);
-                    if (json.error){
-                        alert(json.message);
-                    }else{
-                        alert(json.message);
-                        window.location = "status-trx.php?inv="+json.data;
+                    var json = (typeof response === 'string') ? JSON.parse(response) : response;
+                    if (json.error) {
+                        alert("Gagal: " + (json.message || "Terjadi kesalahan sistem"));
+                    } else {
+                        var noInvoice = json.inv;
+                        window.location.href = "status-trx.php?inv=" + noInvoice;
                     }
+                },
+                error: function() {
+                    alert("Koneksi ke server terputus.");
                 }
             });
             return false;
@@ -1082,6 +1096,7 @@
 
                             alert(json.message);
                         }else{
+
                             document.getElementById("tb_pos_pendakian_id").value = pos;
                             document.getElementById("tb_gunung_id").value = gunung;
                             document.getElementById("tb_start_date").value = start_date;
@@ -1123,7 +1138,14 @@
                             }
 
                             $("#summary").html("");
-                            document.getElementById("summary_total_bayar").textContent= json.data.total_bayar;
+
+
+                            baseTotalTicket = cleanPrice(json.data.total_bayar);
+                            $('#metode_pembayaran').val('');
+                            $('.li-fee').remove();
+
+                            document.getElementById("summary_total_bayar").textContent = json.data.total_bayar;
+
                             $.each(json.data.detail, function (key, value) {
                                 $('#summary').append("<li>\Tanggal "+ value.waktu +" ("+value.status_hari+")\
                                         <table class='table table-bordered' style='margin-top: 0.5rem'>\
@@ -1142,37 +1164,35 @@
                                 for (var i=1; i< total_anggota; i++) {
                                     text += "<form method='post' action='' id='formanggota"+i+"' class='cek_anggota"+i+"'>";
                                     text += "<div class='row'>";
-
                                     text += "<div class='col-md-6'>";
                                     text += "<div class='input-group'>";
                                     text += "<input class='form-control input-border' placeholder='Masukan Email Anggota' type='text' id='email_anggotake"+i+"' name='email_anggotake"+i+"'>";
                                     text += "</div>";
                                     text += "<p><span style='color: red;margin-left: 10px;' id='informasi_anggota"+i+"'></span></p>";
                                     text += "</div>";
-
-                                    text += "<div class='col-md-2 col-4'>";
+                                    text += "<div class='col-md-2'>";
                                     text += "<div class='form-group'>";
-                                    text += "<div class='input-group'>";
-                                    text += "<h4 id='anggota_status"+i+"' class='mx-auto'></h4>";
-                                    text += "</div>";
-                                    text += "</div>";
-                                    text += "</div>";
-
-                                    text += "<div class='col-md-2 col-4'>";
-                                    text += "<div class='form-group'>";
-                                    text += "<button type='button' style='display: block;' onclick='cekAnggota("+i+")'  name='cek_anggota"+i+"' id='cek_anggota"+i+"' class='btn bg-gradient-primary  cek_anggota"+i+"'>";
+                                    text += "<div class='input-group' style='margin-top: 5px;'>";
+                                    text += "<button type='button' style='display: block;border-radius: 10px;' onclick='cekAnggota("+i+")'  name='cek_anggota"+i+"' id='cek_anggota"+i+"' class='btn btn-primary btn-sm cek_anggota"+i+"'>";
                                     text += "<span id='btn-text-proses"+i+"'>Tambah</span>";
                                     text += "<div class='spinner-border spinner-border-sm' id='loading"+i+"' style='display: none;'>";
                                     text += "</div>";
                                     text += "</button>";
-                                    text += "<button type='button' style='display: none;' onclick='detailAnggota("+i+")' name='detail_anggota"+i+"' id='detail_anggota"+i+"' class='btn bg-gradient-info detail_anggota"+i+"'>Detail</button>";
+                                    text += "<button type='button' style='display: none;border-radius: 10px;' onclick='detailAnggota("+i+")' name='detail_anggota"+i+"' id='detail_anggota"+i+"' class='btn btn-info btn-sm detail_anggota"+i+"'>Detail</button>";
                                     text += "</div>";
                                     text += "</div>";
-
-                                    text += "<div class='col-md-2 col-4'>";
+                                    text += "</div>";
+                                    text += "<div class='col-md-2'>";
                                     text += "<div class='form-group'>";
-                                    text += "<div class='input-group'>";
-                                    text += "<button type='button' style='display: none' onclick='batalAnggota("+i+")' name='batal_anggota"+i+"' id='batal_anggota"+i+"' class='btn bg-gradient-danger batal_anggota"+i+"'>Batal</button>";
+                                    text += "<div class='input-group' style='margin-top: 10px;font-weight: bold;'>";
+                                    text += "<span id='anggota_status"+i+"'></span>";
+                                    text += "</div>";
+                                    text += "</div>";
+                                    text += "</div>";
+                                    text += "<div class='col-md-2'>";
+                                    text += "<div class='form-group'>";
+                                    text += "<div class='input-group' style='margin-top: 5px;'>";
+                                    text += "<button type='button' style='display: none' onclick='batalAnggota("+i+")' name='batal_anggota"+i+"' id='batal_anggota"+i+"' class='btn btn-danger btn-sm batal_anggota"+i+"'>Batal</button>";
                                     text += "</div>";
                                     text += "</div>";
                                     text += "</div>";
@@ -1189,6 +1209,36 @@
                 });
                 return false;
             });
+        });
+
+        $('#metode_pembayaran').on('change', function() {
+            if (baseTotalTicket === 0) return;
+
+            var selected = $(this).find(':selected');
+            var feeValue = parseFloat(selected.data('fee')) || 0;
+            var isPercent = parseInt(selected.data('is-percent')) || 0;
+            var feeAmount = 0;
+
+            if (isPercent === 1) {
+                feeAmount = baseTotalTicket * (feeValue / 100);
+            } else {
+                feeAmount = feeValue;
+            }
+
+            var finalTotal = baseTotalTicket + feeAmount;
+            $('#summary_total_bayar').text(formatRupiah(finalTotal));
+
+            $('.li-fee').remove();
+            var feeLabel = isPercent === 1 ? "(" + feeValue + "%)" : "";
+            var feeRow = `<li class="li-fee"><hr style="border-top: 1px dashed #bbb; margin: 10px 0;">
+                <span style="font-weight: bold; color: #555;">Biaya Layanan ${feeLabel}:</span>
+                <table class="table table-bordered" style="margin-top: 0.5rem">
+                    <tr style="background-color: #f8f9fa;">
+                        <td>Metode: ${selected.text().split(' (')[0]}</td>
+                        <td class="text-right"><strong>${formatRupiah(feeAmount)}</strong></td>
+                    </tr>
+                </table></li>`;
+            $('#summary').append(feeRow);
         });
 
         function cekAnggota(i){
@@ -2402,7 +2452,12 @@
 
                                     $("#summary").html("");
                                     var summary_text = "";
+                                    baseTotalTicket = cleanPrice(det_json.data.total_bayar);
                                     document.getElementById("summary_total_bayar").textContent= det_json.data.total_bayar;
+                                    if ($('#metode_pembayaran').val() !== null) {
+                                        $('#metode_pembayaran').trigger('change');
+                                    }
+
                                     $.each(det_json.data.detail, function (key, value) {
                                         summary_text += "</li>";
                                         summary_text += "Tanggal "+ value.waktu +" ("+value.status_hari+")";
@@ -3186,7 +3241,6 @@
                                     const kuota = getKuotaTiket(selectedDate);
                                 },
                                 onClose: function () {
-                                    // Sembunyikan elemen-elemen tertentu saat datepicker ditutup
                                     $("#profile_pemesan").hide();
                                     $("#respon_anggota").hide();
                                     $("#respon_summary").hide();
@@ -3401,9 +3455,19 @@
                     if (det_json.error){
 
                     }else{
+                        $('#metode_pembayaran').val('');
+                        $('.li-fee').remove();
+
                         $("#summary").html("");
                         var summary_text = "";
-                        document.getElementById("summary_total_bayar").textContent= det_json.data.total_bayar;
+
+                        baseTotalTicket = cleanPrice(det_json.data.total_bayar);
+                        document.getElementById("summary_total_bayar").textContent = det_json.data.total_bayar;
+
+                        if ($('#metode_pembayaran').val() !== null) {
+                            $('#metode_pembayaran').trigger('change');
+                        }
+
                         $.each(det_json.data.detail, function (key, value) {
                             summary_text += "</li>";
                             summary_text += "Tanggal "+ value.waktu +" ("+value.status_hari+")";
@@ -3547,9 +3611,19 @@
                     if (det_json.error){
 
                     }else{
+                        $('#metode_pembayaran').val('');
+                        $('.li-fee').remove();
+
                         $("#summary").html("");
                         var summary_text = "";
-                        document.getElementById("summary_total_bayar").textContent= det_json.data.total_bayar;
+
+                        baseTotalTicket = cleanPrice(det_json.data.total_bayar);
+                        document.getElementById("summary_total_bayar").textContent = det_json.data.total_bayar;
+
+                        if ($('#metode_pembayaran').val() !== null) {
+                            $('#metode_pembayaran').trigger('change');
+                        }
+
                         $.each(det_json.data.detail, function (key, value) {
                             summary_text += "</li>";
                             summary_text += "Tanggal "+ value.waktu +" ("+value.status_hari+")";
